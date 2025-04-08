@@ -136,10 +136,11 @@ def detekcja_outlier_zscore(data: pd.DataFrame,
 
 def wprowadzenie_section() -> None:
   
-    st.title("Projekt funkcyjny: Analiza choroby Alzheimera za pomocą metod uczenia maszynowego")
-    st.write("###### `Przemiot`: Zaawansowane programowanie w języku python")
-    st.write("###### `Prowadząca`: dr hab. Iwona Skalna")
-    st.write("###### `Autorki`: Natalia Łyś, Zuzanna Deszcz")
+    st.title("Applied Management Research Methods Project: Analysis of Alzheimer's Disease Using Machine Learning Methods")
+    st.write("###### `Course`: Applied Management Research Methods Project:")
+    st.write("###### `Teacher`: Federico Mangiò")
+    st.write("###### `Course code`: 165019")
+    st.write("###### `Authors`: Natalia Łyś, Zuzanna Deszcz")
 
 
     # Tytuł aplikacji
