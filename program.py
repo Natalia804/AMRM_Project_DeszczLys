@@ -337,117 +337,113 @@ def charakterystyka_danych_section(data: pd.DataFrame) -> None:
 
 def braki_outliery_section() -> None:
     """
-    Wyświetla sekcję dotyczącą:
-    - Usuwania/wypełniania braków danych,
-    - Analizy wartości odstających,
-    - Zapisu przetworzonych danych do st.session_state.
+        Displays the section for:
+        - Handling missing data (removal/imputation),
+        - Outlier analysis,
+        - Saving processed data to st.session_state.
     """
-    st.title("Usuwanie braków danych i analiza wartości odstających")
+    st.title("Handling Missing Data and Outlier Analysis")
 
-    # Sprawdzenie, czy przetworzone dane są dostępne
+    # Check if preprocessed data is available
     if "data_selected" in st.session_state:
         data_selected = st.session_state.data_selected
-        #st.write("Dane zostały wczytane z `session_state`.")
+        # st.write("Data loaded from `session_state`.")
     else:
-        st.error("Dane nie zostały przetworzone w poprzednich sekcjach.")
+        st.error("Data was not processed in previous sections.")
         st.stop()
 
     data_numeric = data_selected.select_dtypes(include=['float64', 'int64'])
-    st.subheader("Podgląd danych przed przetwarzaniem")
+    st.subheader("Preview of data before processing")
     st.dataframe(data_numeric.head())
 
-    # Analiza braków
-    st.subheader("Analiza braków danych")
+    # Missing data analysis
+    st.subheader("Missing Data Analysis")
     missing_numeric = data_numeric.isnull().mean() * 100
     st.bar_chart(missing_numeric)
 
-    # Obsługa braków danych
-    st.subheader("Obsługa braków danych")
+    # Handling missing data
+    st.subheader("Handling Missing Values")
     method_numeric = st.radio(
-        "Interaktywna obsługa danych pozwala na zobaczenie najlepszej możliwości",
-        ["Usuwanie wierszy", "Wypełnianie średnią", "Wypełnianie medianą", "Wypełnianie modą"]
+        "Interactive options for handling missing data:",
+        ["Drop rows", "Fill with mean", "Fill with median", "Fill with mode"]
     )
-    
 
-    if method_numeric == "Usuwanie wierszy":
+    if method_numeric == "Drop rows":
         data_numeric_cleaned = data_numeric.dropna()
-    elif method_numeric == "Wypełnianie średnią":
+    elif method_numeric == "Fill with mean":
         data_numeric_cleaned = data_numeric.fillna(data_numeric.mean())
-    elif method_numeric == "Wypełnianie medianą":
+    elif method_numeric == "Fill with median":
         data_numeric_cleaned = data_numeric.fillna(data_numeric.median())
     else:
         data_numeric_cleaned = data_numeric.fillna(data_numeric.mode().iloc[0])
-    
-    st.write("Dane numeryczne po czyszczeniu:")
+
+    st.write("Numerical data after cleaning:")
     st.dataframe(data_numeric_cleaned.head())
 
-    
     st.markdown("""
-    Najmiej na średnią i odchylenie standardowe na zmienne miało wpływ uzupełnianie braków modą, 
-    dlatego postawiono na to rozwiązanie. warto jedna zauważyć, że wybór metody w tym przypadku nie miał dużego wpływu na wyniki.
+    Filling with mode had the least impact on the mean and standard deviation of the variables,  
+    so this method was chosen. However, it's worth noting that the choice of method did not significantly affect the results in this case.
     """)
     data_numeric_cleaned = data_numeric.fillna(data_numeric.mode().iloc[0])
     data_cleaned = data_numeric_cleaned
 
-    # Debug: Podgląd scalonych danych
-    st.write("Dane po czyszczeniu:")
+    # Debug: Cleaned data preview
+    st.write("Data after final cleaning:")
     st.dataframe(data_cleaned.head())
 
-
-    # Zapis do session_state
+    # Save to session_state
     st.session_state.data_cleaned = data_cleaned
 
-    # Analiza outlierów
-    st.subheader("Analiza wartości odstających (Z-score)")
+    # Outlier analysis
+    st.subheader("Outlier Analysis (Z-score)")
     scaler = StandardScaler()
     data_standardized = scaler.fit_transform(data_numeric_cleaned)
     data_standardized = pd.DataFrame(data_standardized, columns=data_numeric_cleaned.columns)
 
     outliers_summary = {
-        "Kolumna": [],
-        "Liczba wartości odstających (|z|>3)": []
+        "Column": [],
+        "Number of Outliers (|z|>3)": []
     }
 
     for col in data_standardized.columns:
         outliers = detekcja_outlier_zscore(data_standardized, col, threshold=3)
-        outliers_summary["Kolumna"].append(col)
-        outliers_summary["Liczba wartości odstających (|z|>3)"].append(len(outliers))
+        outliers_summary["Column"].append(col)
+        outliers_summary["Number of Outliers (|z|>3)"].append(len(outliers))
 
     outliers_summary_df = pd.DataFrame(outliers_summary)
-    st.write("Podsumowanie liczby wartości odstających w każdej kolumnie:")
+    st.write("Summary of the number of outliers in each column:")
     st.dataframe(outliers_summary_df)
 
     st.write("""
-    Ze względu na naturę medyczną problemu, zdecydowano się nie usuwać wartości odstających,
-    aby nie tracić potencjalnie ważnych obserwacji.
+    Due to the medical nature of the problem, outliers were not removed in order to retain potentially important observations.
     """)
 
 
 def dzielenie_section() -> None:
     """
-    Wyświetla sekcję dotyczącą:
-    - Podziału danych na zbiór uczący i testowy,
-    - Ewentualnej standaryzacji (poza kolumnami binarnymi),
-    - Zapisu wynikowych zbiorów do st.session_state.
+        Displays the section for:
+        - Splitting the data into training and testing sets,
+        - Optional standardization (excluding binary columns),
+        - Saving the resulting sets to st.session_state.
     """
-    st.title("Dzielenie na zbiór uczący i testowy")
+    st.title("Train-Test Split")
 
     if "data_cleaned" not in st.session_state:
-        st.error("Brak oczyszczonych danych. Upewnij się, że poprzednie sekcje zostały wykonane.")
+        st.error("Cleaned data not found. Please make sure previous sections have been completed.")
         st.stop()
 
     data_cleaned = st.session_state["data_cleaned"]
 
-    # Sprawdzamy, czy mamy kolumnę docelową
+    # Check if target column exists
     if "is_demented" not in data_cleaned.columns:
-        st.error("Kolumna docelowa 'is_demented' nie istnieje w zbiorze danych.")
+        st.error("Target column 'is_demented' does not exist in the dataset.")
         st.stop()
 
     X = data_cleaned.drop(columns=["is_demented"])
     y = data_cleaned["is_demented"]
 
     numeric_cols = X.select_dtypes(include=['float64', 'int64']).columns
-    # Jeśli jest kolumna binarna is_male, wyłącz ją z standaryzacji
+    # If binary column 'is_male' exists, exclude it from standardization
     if "is_male" in numeric_cols:
         numeric_cols = numeric_cols.drop("is_male")
 
@@ -459,14 +455,14 @@ def dzielenie_section() -> None:
         X, y, test_size=0.2, random_state=42, stratify=y
     )
 
-    st.write("Podgląd X_train po standaryzacji:")
+    st.write("Preview of X_train after standardization:")
     st.dataframe(X_train.head())
-    st.write("Podgląd y_train:")
+    st.write("Preview of y_train:")
     st.write(y_train.head())
-    st.write(f"Liczba próbek w zbiorze uczącym: {len(X_train)}")
-    st.write(f"Liczba próbek w zbiorze testowym: {len(X_test)}")
+    st.write(f"Number of samples in training set: {len(X_train)}")
+    st.write(f"Number of samples in test set: {len(X_test)}")
 
-    # Zapisujemy do session_state
+    # Save to session_state
     st.session_state["X_train"] = X_train
     st.session_state["X_test"] = X_test
     st.session_state["y_train"] = y_train
