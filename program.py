@@ -916,19 +916,19 @@ def main() -> None:
         st.session_state["data"] = data
 
     # Wywołanie odpowiedniej sekcji
-    if selected_section == "Wprowadzenie":
+    if selected_section == "Introduction":
         wprowadzenie_section()
-    elif selected_section == "Charakterystyka zbioru danych":
+    elif selected_section == "Dataset Description":
         charakterystyka_danych_section(st.session_state["data"])
-    elif selected_section == "Usuwanie braków i analiza outlierów":
+    elif selected_section == "Missing Data Removal and Outlier Analysis":
         braki_outliery_section()
-    elif selected_section == "Dzielenie na zbiór uczący i testowy":
+    elif selected_section == "Train-Test Split":
         dzielenie_section()
-    elif selected_section == "Metody uczenia maszynowego":
+    elif selected_section == "Machine Learning Methods":
         metody_uczenia_section()
-    elif selected_section == "Podsumowanie i wnioski":
+    elif selected_section == "Summary and Conclusions":
         podsumowanie_section()
-    elif selected_section == "Dokumentacja":
+    elif selected_section == "Documentation":
         dokumentacja_section()
 
 
