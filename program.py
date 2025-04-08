@@ -24,18 +24,19 @@ import shap
 
 def wczytaj_dane(path: str) -> pd.DataFrame:
     """
-    Wczytuje dane z pliku CSV i usuwa kolumnę 'CDR' (jeśli istnieje).
+        Loads data from a CSV file and removes the 'CDR' column (if it exists).
 
-    Parameters
-    ----------
-    path : str
-        Ścieżka do pliku CSV.
+        Parameters
+        ----------
+        path : str
+            Path to the CSV file.
 
-    Returns
-    -------
-    pd.DataFrame
-        DataFrame zawierający wczytane dane (bez kolumny 'CDR').
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame containing the loaded data (without the 'CDR' column).
     """
+
     data = pd.read_csv(path)
     if 'CDR' in data.columns:
         data = data.drop(columns=['CDR'])
@@ -44,20 +45,21 @@ def wczytaj_dane(path: str) -> pd.DataFrame:
 
 def przygotuj_dane_kategoryczne(data: pd.DataFrame) -> pd.DataFrame:
     """
-    Dokonuje mapowania kolumn kategorycznych:
-    - 'M/F' -> is_male (0/1),
-    - 'Group' -> is_demented, is_converted (0/1).
+        Maps categorical columns:
+        - 'M/F' -> is_male (0/1),
+        - 'Group' -> is_demented, is_converted (0/1).
 
-    Parameters
-    ----------
-    data : pd.DataFrame
-        DataFrame z wczytanymi danymi (z kolumnami 'M/F', 'Group').
+        Parameters
+        ----------
+        data : pd.DataFrame
+            DataFrame with loaded data (including 'M/F' and 'Group' columns).
 
-    Returns
-    -------
-    pd.DataFrame
-        DataFrame z dodanymi kolumnami is_male, is_demented, is_converted.
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with added columns: is_male, is_demented, is_converted.
     """
+
     if 'M/F' in data.columns:
         data['is_male'] = data['M/F'].map({'M': True, 'F': False}).astype(int)
 
@@ -81,50 +83,52 @@ def wykres_macierzy_konfuzji(y_true: pd.Series,
                              ax=None, 
                              labels=["Not Demented", "Demented"]) -> None:
     """
-    Rysuje macierz konfuzji przy pomocy Seaborn i matplotlib.
+        Draws a confusion matrix using Seaborn and Matplotlib.
 
-    Parameters
-    ----------
-    y_true : pd.Series
-        Prawdziwe etykiety (0/1).
-    y_pred : pd.Series
-        Przewidywane etykiety (0/1).
-    ax : matplotlib.axes._subplots.AxesSubplot, optional
-        Obiekt osi, na którym ma być narysowana macierz (domyślnie None).
-    labels : list of str
-        Etykiety osi X/Y w macierzy (np. ["Not Demented", "Demented"]).
+        Parameters
+        ----------
+        y_true : pd.Series
+            True labels (0/1).
+        y_pred : pd.Series
+            Predicted labels (0/1).
+        ax : matplotlib.axes._subplots.AxesSubplot, optional
+            Axis object on which the matrix should be drawn (default is None).
+        labels : list of str
+            Labels for the X/Y axes in the matrix (e.g., ["Not Demented", "Demented"]).
     """
     cm = confusion_matrix(y_true, y_pred)
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
                 xticklabels=labels, yticklabels=labels, ax=ax)
     if ax:
-        ax.set_xlabel("Przewidywania")
-        ax.set_ylabel("Rzeczywistość")
+        ax.set_xlabel("Predictions")
+        ax.set_ylabel("Actual")
     else:
-        plt.xlabel("Przewidywania")
-        plt.ylabel("Rzeczywistość")
+        plt.xlabel("Predictions")
+        plt.ylabel("Actual")
+
 
 
 def detekcja_outlier_zscore(data: pd.DataFrame, 
                             column: str, 
                             threshold: float = 3.0) -> pd.DataFrame:
     """
-    Zwraca wiersze, które są outlierami w danej kolumnie na podstawie Z-score.
+        Returns rows that are outliers in the given column based on Z-score.
 
-    Parameters
-    ----------
-    data : pd.DataFrame
-        DataFrame ze standaryzowanymi danymi.
-    column : str
-        Nazwa kolumny, w której wykrywamy wartości odstające.
-    threshold : float, optional
-        Próg Z-score powyżej którego uznajemy wartości za odstające (domyślnie 3).
+        Parameters
+        ----------
+        data : pd.DataFrame
+            DataFrame with standardized data.
+        column : str
+            Name of the column in which to detect outliers.
+        threshold : float, optional
+            Z-score threshold above which values are considered outliers (default is 3).
 
-    Returns
-    -------
-    pd.DataFrame
-        Wiersze DataFrame, w których wartości w danej kolumnie przekraczają threshold.
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame rows where values in the given column exceed the threshold.
     """
+
     if data[column].notnull().sum() > 0:
         z_scores = zscore(data[column].dropna())
         outliers_idx = np.where(np.abs(z_scores) > threshold)[0]
@@ -143,19 +147,21 @@ def wprowadzenie_section() -> None:
     st.write("###### `Authors`: Natalia Łyś, Zuzanna Deszcz")
 
 
-    # Tytuł aplikacji
-    st.header("Analiza Zbioru Danych: *Alzheimer Feature*")
-    st.write("#### Wprowadzenie")
+   # Application Title
+    st.header("Dataset Analysis: *Alzheimer Feature*")
+    st.write("#### Introduction")
     st.markdown("""
     <p>
-    <strong> Choroba Alzheimera (AD)  </strong> to najbardziej powszechna odmiana demencji. 
-    W Europie choroba ta jest głównym skutkiem utraty samodzielności i upośledzenia osób starszych. 
-    Szacuje się ilość chorych na <strong> 10 milionów ludzi </strong>.
-    Zbiór danych zawiera informacje na temat poniżej szerzej objaśnionymi medycznymi
-    warunkami, ale również socjoekonomicznymi i diagnozą demencji u pacjenta. Zbiór, z którego korzystamy pochodzi ze stronny 
+    <strong>Alzheimer's disease (AD)</strong> is the most common form of dementia.  
+    In Europe, it is a leading cause of loss of independence and impairment in the elderly.  
+    It is estimated that <strong>10 million people</strong> are affected.  
+    The dataset includes information not only about the medical conditions (explained in more detail below)  
+    but also socioeconomic factors and dementia diagnosis in patients.  
+    The dataset we are using comes from  
     <a href="https://www.kaggle.com/datasets/brsdincer/alzheimer-features/data" target="_blank" style="color: #007BFF; font-weight: bold;">Kaggle</a>.
     </p>
     """, unsafe_allow_html=True)
+
 
 
 def charakterystyka_danych_section(data: pd.DataFrame) -> None:
@@ -883,22 +889,22 @@ def dokumentacja_section() -> None:
     """, unsafe_allow_html=True)
 
 
-# =============== FUNKCJA GŁÓWNA APLIKACJI =============== #
+# =============== MAIN PART OF THE APPLICATION=============== #
 
 def main() -> None:
     """
     Główna funkcja aplikacji Streamlit.
     Odpowiada za stworzenie bocznego menu (sidebar) i wywoływanie odpowiednich sekcji.
     """
-    st.sidebar.title("Nawigacja")
+    st.sidebar.title("Navigation")
     sections = [
-        "Wprowadzenie",
-        "Charakterystyka zbioru danych",
-        "Usuwanie braków i analiza outlierów",
-        "Dzielenie na zbiór uczący i testowy",
-        "Metody uczenia maszynowego",
-        "Podsumowanie i wnioski",
-        "Dokumentacja"
+        "Introduction",
+        "Dataset description",
+        "Missing Data Removal and Outlier Analysis",
+        "Train-Test Split",
+        "Machine Learning Methods",
+        "Summary and Conclusions",
+        "Documentation"
     ]
     selected_section = st.sidebar.radio("Przejdź do sekcji:", sections)
 
