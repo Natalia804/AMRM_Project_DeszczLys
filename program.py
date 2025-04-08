@@ -773,120 +773,127 @@ def metody_uczenia_section() -> None:
 
 def podsumowanie_section() -> None:
     """
-    Wyświetla końcową sekcję podsumowującą projekt:
-    - Najważniejsze wnioski
-    - Krótka interpretacja wyników
+        Displays the final section summarizing the project:
+        - Key conclusions
+        - Brief interpretation of results
     """
-    st.title("Podsumowanie i wnioski")
+    st.title("Summary and Conclusions")
     st.markdown("""
-    <h4>Podsumowanie:</h4>
+    <h4>Summary:</h4>
     <ul>
-        <p>Projekt miał na celu eksplorację zmiennych i ustalenie, które z nich istotnie wpływają na zachorowanie na chorobę Alzheimera. W tym celu zastosowano modele uczenia maszynowego (SVM, Drzewa decyzyjne, Random Forest) i wybrano najlepszy (Random forest), który maksymalizuje możliwości przewidywania. Ustalono, jakie zmienne najbardziej wpływają na zachorowania i zweryfikowano je z dostępną literaturą.</p>
-        <p>Najsilniejsze efekty zaobserwowano w przypadku MMSE i nWBV, natomiast zmienne takie jak is_male, eTIV i SES wykazują mniejszy, bardziej zróżnicowany wpływ.</p>
+        <p>The goal of the project was to explore variables and determine which ones significantly influence the risk of developing Alzheimer's disease.  
+        For this purpose, machine learning models (SVM, Decision Trees, Random Forest) were applied, and the best-performing model (Random Forest)  
+        was selected for its predictive capability. Variables with the strongest impact on the disease were identified and compared with findings from existing literature.</p>
+
+        <p>The strongest effects were observed for MMSE and nWBV, while variables like is_male, eTIV, and SES showed a smaller and more varied impact.</p>
+
         <ul>
-            <li><strong>MMSE</strong> i <strong>nWBV</strong> to najważniejsze wskaźniki. Niskie wyniki w teście poznawczym i mniejsza objętość mózgu wyraźnie zwiększają ryzyko demencji.</li>
-            <li><strong>Płeć męska</strong> i <strong>niski SES</strong> to dodatkowe czynniki ryzyka, sugerujące konieczność ukierunkowanego wsparcia.</li>
-            <li><strong>eTIV</strong> i inne parametry mózgowe mają umiarkowany wpływ, ale ich monitorowanie może być pomocne w ocenie ryzyka.</li>
+            <li><strong>MMSE</strong> and <strong>nWBV</strong> are the most important indicators. Low cognitive test scores and reduced brain volume clearly increase the risk of dementia.</li>
+            <li><strong>Male gender</strong> and <strong>low SES</strong> are additional risk factors, suggesting the need for targeted support.</li>
+            <li><strong>eTIV</strong> and other brain parameters have a moderate impact, but monitoring them can help in risk assessment.</li>
         </ul>
-        <p>Wyniki badania wskazują, że wczesna diagnoza oraz interwencje poprawiające wyniki MMSE mogą znacząco wpłynąć na ograniczenie ryzyka. Regularne badania MRI/CT dla osób z grup ryzyka mogą pomóc we wczesnym wykryciu problemów. Szczególną uwagę należy zwrócić na edukację zdrowotną i profilaktykę w tych grupach.</p>
-        <p>Model uwzględnia zarówno cechy biologiczne, jak i społeczne, co sugeruje potrzebę podejścia interdyscyplinarnego w ocenie i prewencji demencji.</p>
+
+        <p>The results indicate that early diagnosis and interventions aimed at improving MMSE scores can significantly reduce the risk.  
+        Regular MRI/CT scans for high-risk groups may help detect issues early. Special attention should be paid to health education and prevention in these groups.</p>
+
+        <p>The model incorporates both biological and social features, suggesting that an interdisciplinary approach is essential in the assessment and prevention of dementia.</p>
     </ul>
     """, unsafe_allow_html=True)
+
 
 
 
 def dokumentacja_section() -> None:
+
     """
-    Wyświetla sekcję dokumentacji projektu:
-    - Opis celu i zakresu
-    - Sposób uruchomienia
-    - Struktura projektu
-    - Przykład docstringów
+        Displays the project documentation section:
+        - Project purpose and scope
+        - How to run it
+        - Project structure
+        - Example docstrings
     """
-    st.title("Dokumentacja projektu")
+    st.title("Project Documentation")
     st.markdown("""
-    <h4>Cel i zakres</h4>
+    <h4>Purpose and Scope</h4>
     <p>
-      Projekt ma na celu zbudowaniu analizy danych medycznych oraz socjo-ekonomicznych dotyczących alzheimera,
-      w tym przetwarzania braków danych, standaryzacji, trenowania modeli klasyfikacji
-      oraz interpretacji wyników.
+    The goal of this project is to build an analysis of medical and socio-economic data related to Alzheimer's disease,  
+    including handling missing data, standardization, training classification models, and interpreting results.
     </p>
 
-    <h4>Instrukcja uruchomienia</h4>
+    <h4>How to Run</h4>
     <ul>
-      <p>Strona już działa i jest dotępna. Kod jest dostępny do wglądu w prawym górnym rogu w githubie</strong>
-      </p>
+    <p>The application is already running and available. The code is accessible in the top right corner on <strong>GitHub</strong>.</p>
     </ul>
 
-    <h4>Struktura plików</h4>
+    <h4>File Structure</h4>
     <p>
-      <ul>
-        <li><code>program.py</code> główny plik uruchamiający Streamlit</li>
-        <li><code>alzheimer_features.csv</code> plik z danymi</li>
-        <li><code>requirements.txt </code> plik z wymaganymi bibliotekami do funkcjonowania aplikacji</li>
-      </ul>
+    <ul>
+        <li><code>program.py</code> – the main file that runs the Streamlit application</li>
+        <li><code>alzheimer_features.csv</code> – the dataset file</li>
+        <li><code>requirements.txt</code> – file containing required libraries for the app to work</li>
+    </ul>
     </p>
 
-    <h4>Podział zadań</h4>
-        <ul>
-            <li><strong>Zuzanna Deszcz</strong>:
-                <ul>
-                    <li><strong>Przetwarzanie Danych:</strong>
-                        <ul>
-                            <li>Wczytywanie danych z pliku CSV.</li>
-                            <li>Mapowanie i przekształcanie danych kategorycznych.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Tworzenie Wizualizacji:</strong>
-                        <ul>
-                            <li>Generowanie wykresów statystycznych i korelacyjnych.</li>
-                            <li>Tworzenie macierzy konfuzji i boxplotów.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Sekcje Wprowadzające w Streamlit:</strong>
-                        <ul>
-                            <li>Opracowanie sekcji wprowadzającej i charakterystyki zbioru danych w aplikacji Streamlit.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Czyszczenie Danych:</strong>
-                        <ul>
-                            <li>Analiza i obsługa braków danych (np. usuwanie, uzupełnianie wartości).</li>
-                            <li>Wykrywanie i analiza wartości odstających (outlierów).</li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li><strong>Natalia Łyś</strong>:
-                <ul>
-                    <li><strong>Podział Danych:</strong>
-                        <ul>
-                            <li>Dzielenie danych na zbiory uczący i testowy.</li>
-                            <li>Standaryzacja danych numerycznych.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Trenowanie Modeli Uczenia Maszynowego:</strong>
-                        <ul>
-                            <li>Implementacja i optymalizacja modeli takich jak Drzewa Decyzyjne, SVM, Random Forest.</li>
-                            <li>Użycie GridSearchCV do doboru najlepszych hiperparametrów.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Analiza i Prezentacja Wyników:</strong>
-                        <ul>
-                            <li>Ocena modeli za pomocą metryk (dokładność, precyzja, czułość, F1-score).</li>
-                            <li>Tworzenie i interpretacja wykresów porównawczych.</li>
-                            <li>Implementacja analizy interpretowalności modeli (np. SHAP).</li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+    <h4>Task Division</h4>
+    <ul>
+        <li><strong>Zuzanna Deszcz</strong>:
+            <ul>
+                <li><strong>Data Processing:</strong>
+                    <ul>
+                        <li>Loading data from the CSV file.</li>
+                        <li>Mapping and transforming categorical data.</li>
+                    </ul>
+                </li>
+                <li><strong>Creating Visualizations:</strong>
+                    <ul>
+                        <li>Generating statistical and correlation plots.</li>
+                        <li>Creating confusion matrices and boxplots.</li>
+                    </ul>
+                </li>
+                <li><strong>Introductory Sections in Streamlit:</strong>
+                    <ul>
+                        <li>Developing the introduction and dataset description sections in the Streamlit app.</li>
+                    </ul>
+                </li>
+                <li><strong>Data Cleaning:</strong>
+                    <ul>
+                        <li>Handling missing data (e.g., removal, value imputation).</li>
+                        <li>Detecting and analyzing outliers.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><strong>Natalia Łyś</strong>:
+            <ul>
+                <li><strong>Data Splitting:</strong>
+                    <ul>
+                        <li>Splitting data into training and testing sets.</li>
+                        <li>Standardizing numerical data.</li>
+                    </ul>
+                </li>
+                <li><strong>Training Machine Learning Models:</strong>
+                    <ul>
+                        <li>Implementing and optimizing models such as Decision Trees, SVM, and Random Forest.</li>
+                        <li>Using GridSearchCV to select the best hyperparameters.</li>
+                    </ul>
+                </li>
+                <li><strong>Analysis and Presentation of Results:</strong>
+                    <ul>
+                        <li>Evaluating models using metrics (accuracy, precision, recall, F1-score).</li>
+                        <li>Creating and interpreting comparison charts.</li>
+                        <li>Implementing model interpretability analysis (e.g., SHAP).</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
 
-    
-    <h4>Dokumentacja funkcji (docstringi)</h4>
+    <h4>Function Documentation (Docstrings)</h4>
     <p>
-      Każda funkcja zawiera krótki opis, parametry i zwracane wartości, z uwagi na czytelność kodu.
+    Each function includes a short description, parameters, and return values to ensure code clarity.
     </p>
     """, unsafe_allow_html=True)
+
 
 
 # =============== MAIN PART OF THE APPLICATION=============== #
