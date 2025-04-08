@@ -637,93 +637,106 @@ def metody_uczenia_section() -> None:
 
     st.table(metrics_df_rf)
 
-    # ========== Podsumowanie wyników ========== #
-    st.subheader("Porównanie wyników")
+    # ========== Summary of Results ========== #
+    st.subheader("Model Comparison")
     results = [
         {
             "Model": "Decision Tree",
-            "Dokładność": tree_accuracy,
-            "Precyzja": tree_precision,
-            "Czułość": tree_recall,
+            "Accuracy": tree_accuracy,
+            "Precision": tree_precision,
+            "Recall": tree_recall,
             "F1-score": tree_f1,
         },
         {
             "Model": "SVM",
-            "Dokładność": svm_accuracy,
-            "Precyzja": svm_precision,
-            "Czułość": svm_recall,
+            "Accuracy": svm_accuracy,
+            "Precision": svm_precision,
+            "Recall": svm_recall,
             "F1-score": svm_f1,
         },
         {
             "Model": "Random Forest",
-            "Dokładność": rf_accuracy,
-            "Precyzja": rf_precision,
-            "Czułość": rf_recall,
+            "Accuracy": rf_accuracy,
+            "Precision": rf_precision,
+            "Recall": rf_recall,
             "F1-score": rf_f1,
         }
     ]
     results_df = pd.DataFrame(results)
     st.dataframe(results_df)
 
-    # Wykres porównania
+    # Comparison chart
     fig, ax = plt.subplots(figsize=(8, 4))
-    results_df.set_index("Model")[["Dokładność", "Precyzja", "Czułość", "F1-score"]].plot(kind="bar", ax=ax)
-    plt.title("Porównanie metryk klasyfikacji")
+    results_df.set_index("Model")[["Accuracy", "Precision", "Recall", "F1-score"]].plot(kind="bar", ax=ax)
+    plt.title("Comparison of Classification Metrics")
     plt.xticks(rotation=0)
     st.pyplot(fig)
+
+           
     
     
-    
-    # Interpretacja wyników
-    st.header("Interpretacja wyników")
-    
+    # Results Interpretation
+    st.header("Results Interpretation")
+
     st.write("""
-    Na podstawie wyników analizy trzech modeli uczenia maszynowego — Drzewa Decyzyjnego, SVM oraz Random Forest — możemy wyciągnąć wnioski dotyczące diagnozowania demencji na podstawie dostarczonych zmiennych. 
+    Based on the results of analyzing three machine learning models — Decision Tree, SVM, and Random Forest — we can draw conclusions regarding dementia diagnosis based on the provided features.
     """)
 
-
-    st.subheader("1. Dokładność (Accuracy)")
+    st.subheader("1. Accuracy")
     st.write("""
-    Wszystkie trzy modele osiągnęły tę samą dokładność wynoszącą 85,33%. Oznacza to, że 85,33% wszystkich diagnoz (zarówno pozytywnych, jak i negatywnych) zostało prawidłowo sklasyfikowanych, co wskazuje to na ogólną solidność modeli, ale dokładność sama w sobie nie wystarcza w przypadku niezbalansowanych zbiorów danych, z którymi mamy tutaj doczynienia.
+    All three models achieved the same accuracy of 85.33%. This means that 85.33% of all diagnoses (both positive and negative) were correctly classified.  
+    While this indicates overall model robustness, accuracy alone is not sufficient when dealing with imbalanced datasets, which is the case here.
     """)
 
-    st.subheader("2. Precyzja (Precision)")
+    st.subheader("2. Precision")
     st.write("""
-    Najwyższą precyzję uzyskano dla Drzewa Decyzyjnego i SVM (90,91%), co oznacza, że większość przypadków oznaczonych jako „Demented” faktycznie należała do tej grupy. Random Forest uzyskał precyzję 84,62%, co jest niższym wynikiem, ale nadal akceptowalnym. Może to oznaczać większą liczbę fałszywie pozytywnych diagnoz w porównaniu z innymi modelami.
+    The highest precision was achieved by the Decision Tree and SVM (90.91%), meaning that most of the cases classified as “Demented” actually belonged to that group.  
+    Random Forest achieved a precision of 84.62%, which is slightly lower but still acceptable.  
+    This may indicate a higher number of false positives compared to the other models.
     """)
 
-    st.subheader("3. Czułość (Recall)")
+    st.subheader("3. Recall")
     st.write("""
-    Czułość Drzewa Decyzyjnego i SVM wynosi 68,97%. To stosunkowo niski wynik, co oznacza, że oba modele nie zidentyfikowały wielu przypadków rzeczywistej demencji (fałszywe negatywy). To duży problem w modelach medycznych. Wolelibyśmy, żeby ewentualnie wykryw demencji tam gdzie jej nie ma niż na odwrót. Random Forest osiągnął lepszy wynik w tej kategorii (75,86%), co wskazuje na jego większą zdolność do wykrywania rzeczywistych przypadków demencji. Jest to istotne w analizie medycznej, ponieważ błędne pominięcie diagnozy demencji może mieć poważne konsekwencje.
+    The recall for the Decision Tree and SVM was 68.97%. This relatively low value means that both models missed many actual cases of dementia (false negatives).  
+    This is a significant issue in medical models — we would rather detect dementia where it isn’t present than miss a real case.  
+    Random Forest performed better in this category (75.86%), indicating a greater ability to detect true dementia cases.  
+    This is crucial in medical analysis, as missing a dementia diagnosis can have serious consequences.
     """)
 
     st.subheader("4. F1-score")
     st.write("""
-    Wskaźnik F1-score uwzględnia zarówno precyzję, jak i czułość, dzięki czemu stanowi bardziej zbalansowaną miarę wydajności modelu. Drzewo Decyzyjne i SVM osiągnęły wynik 78,43%, co wskazuje na ich równoważność w równoważeniu fałszywych pozytywów i negatywów. Random Forest uzyskał najlepszy wynik F1-score na poziomie 80%. Wskazuje to, że ten model lepiej balansuje między precyzją a czułością, co czyni go najbardziej odpowiednim wyborem w tej analizie.
+    The F1-score considers both precision and recall, making it a more balanced measure of model performance.  
+    The Decision Tree and SVM achieved an F1-score of 78.43%, indicating similar ability to balance false positives and false negatives.  
+    Random Forest achieved the highest F1-score at 80%, suggesting that it best balances precision and recall, making it the most suitable choice for this analysis.
     """)
 
-    # Wnioski
-    st.header("Wnioski")
+    # Conclusions
+    st.header("Conclusions")
     st.write("""
-    1. **Random Forest** wykazał najlepszą wydajność w zakresie zrównoważenia precyzji i czułości (F1-score = 80%). Jego wyższa czułość czyni go szczególnie przydatnym, gdy kluczowe jest minimalizowanie liczby pominiętych przypadków demencji, co dla nas jest ważne w tym przypadku.
-    2. **Drzewo Decyzyjne i SVM** osiągnęły bardzo podobne wyniki, szczególnie w kategoriach precyzji i F1-score, ale ich niższa czułość jest niepożądana w praktyce medycznej.
+    1. **Random Forest** showed the best performance in terms of balancing precision and recall (F1-score = 80%).  
+    Its higher recall makes it particularly useful when it’s crucial to minimize missed cases of dementia, which is especially important in our case.
+
+    2. **Decision Tree and SVM** achieved very similar results, particularly in precision and F1-score,  
+    but their lower recall is less desirable in medical practice.
     """)
 
-    # Analiza SHAP na przykładzie najlepszego modelu (np. Random Forest)
-    st.header("Analiza interpretowalności modelu Random Forest - wartości SHAP")
+    # SHAP Analysis Example Using the Best Model (e.g., Random Forest)
+    st.header("Interpretability Analysis of the Random Forest Model - SHAP Values")
     st.markdown("""
-    Wykresy SHAP (SHapley Additive exPlanations) są narzędziem do zrozumienia, jak poszczególne cechy wpływają na decyzje modelu. Oto, jak je interpretować i jak korzystać z nich w praktyce:
+    SHAP plots (SHapley Additive exPlanations) are a tool used to understand how individual features affect the model's decisions. Here's how to interpret them and use them in practice:
 
     ---
-    
-    ## Jak interpretować wykres SHAP?
-    - **Oś X:** Pokazuje wartości SHAP, które mierzą wpływ danej cechy na wynik modelu:
-      - **Po prawej stronie (wartości dodatnie):** Cecha zwiększa wynik modelu (przyczynia się do wyższego prawdopodobieństwa wyniku) - w naszym przypadku zwiększa prawdopodobieństwo zachorowania.
-      - **Po lewej stronie (wartości ujemne):** Cecha zmniejsza wynik modelu (zmniejsza prawdopodobieństwo wyniku) - zmniejsza prawdopodobieństwo zachorowania.
-    - **Oś Y:** Lista cech uporządkowana według ich ważności w modelu - w naszym przypadku najważnieszje jest MMSE.
-    - **Kolor punktów:** Wskazuje wartość cechy:
-      - **Czerwony:** Wysoka wartość cechy - w naszym przypadku np. im lepsze wyniki w teście MMSE.
-      - **Niebieski:** Niska wartość cechy - gorsze wyniki w teście MMSE.
+
+    ## How to Interpret a SHAP Plot?
+    - **X-axis:** Shows SHAP values, which measure the impact of a given feature on the model’s output:
+    - **Right side (positive values):** The feature increases the model’s output (in our case, increases the probability of having the disease).
+    - **Left side (negative values):** The feature decreases the model’s output (reduces the probability of the disease).
+
+    - **Y-axis:** A list of features ordered by their importance in the model — in our case, MMSE is the most important.
+
+    - **Dot color:** Indicates the feature value:
+    - **Red:** High feature value — e.g., higher MMSE test score.
+    - **Blue:** Low feature value — e.g., lower MMSE test score.
     """)
 
     # Tworzenie obiektu SHAP Explainer
@@ -744,30 +757,29 @@ def metody_uczenia_section() -> None:
     
     st.write("""
     ### 1. `MMSE`
-    - **Wysokie wyniki MMSE (czerwone kropki):** Obniżają prawdopodobieństwo demencji (SHAP < 0), co oznacza, że dobre wyniki w teście poznawczym chronią przed diagnozą demencji.
-    - **Niskie wyniki MMSE (niebieskie kropki):** Zwiększają prawdopodobieństwo demencji (SHAP > 0), co sugeruje, że obniżenie funkcji poznawczych jest silnie związane z diagnozą demencji.
+    - **High MMSE scores (red dots):** Decrease the likelihood of dementia (SHAP < 0), meaning good cognitive test results protect against a dementia diagnosis.
+    - **Low MMSE scores (blue dots):** Increase the likelihood of dementia (SHAP > 0), suggesting that cognitive decline is strongly associated with dementia diagnosis.
 
     ### 2. `is_male`
-    - **Mężczyźni (niebieskie punkty):** mają większe prawdopodobieństwo demencji.
-    - **Kobiety (czerwone punkty):** mniejsze prawdopodobieństwo demencji.
-    - **Wniosek:** Płeć męska może być czynnikiem ryzyka w tym kontekście. Wiemy z badań, że ten wniosek jest  nieprawdziwy, a próbka, która została zbadana jest niereprezentatywna.
+    - **Men (blue dots):** Have a higher probability of developing dementia.
+    - **Women (red dots):** Have a lower probability of developing dementia.
+    - **Conclusion:** Male gender may appear as a risk factor in this context. However, we know from research that this conclusion is inaccurate, and the sample studied is not representative.
 
     ### 3. `nWBV`
-    - **Niższa objętość mózgu (niebieskie kropki):** Zwiększa ryzyko demencji (SHAP > 0).
-    - **Wyższa objętość mózgu (czerwone kropki):** Zmniejsza ryzyko demencji (SHAP < 0).
-    - **Wniosek:** Utrata objętości mózgu jest istotnym wskaźnikiem ryzyka demencji.
+    - **Lower brain volume (blue dots):** Increases the risk of dementia (SHAP > 0).
+    - **Higher brain volume (red dots):** Decreases the risk of dementia (SHAP < 0).
+    - **Conclusion:** Brain volume loss is a significant risk indicator for dementia.
 
     ### 4. `eTIV`
-    - **Wpływ eTIV jest mniej wyraźny, ale ogólnie:**
-      - Niższe wartości eTIV mogą nieznacznie zwiększać ryzyko demencji.
-      - Wyższe wartości eTIV mają łagodny efekt ochronny.
-    - **Wniosek:** Warto monitorować eTIV jako dodatkowy wskaźnik.
+    - **The impact of eTIV is less pronounced, but overall:**
+    - Lower eTIV values may slightly increase dementia risk.
+    - Higher eTIV values have a mild protective effect.
+    - **Conclusion:** Monitoring eTIV can be helpful as an additional indicator.
 
     ### 5. `SES`
-    - **Niższy SES (niebieskie punkty):** Zwiększa ryzyko demencji (SHAP > 0).
-    - **Wyższy SES (czerwone punkty):** Zmniejsza ryzyko demencji (SHAP < 0).
-    - **Wniosek:** Osoby z niższym statusem społeczno-ekonomicznym są bardziej narażone na demencję. Wsparcie dla tej grupy może zmniejszyć ryzyko.
-
+    - **Lower SES (blue dots):** Increases the risk of dementia (SHAP > 0).
+    - **Higher SES (red dots):** Decreases the risk of dementia (SHAP < 0).
+    - **Conclusion:** People with lower socio-economic status are more exposed to dementia risk. Support for this group could help reduce that risk.
     """)
 
 
@@ -900,9 +912,10 @@ def dokumentacja_section() -> None:
 
 def main() -> None:
     """
-    Główna funkcja aplikacji Streamlit.
-    Odpowiada za stworzenie bocznego menu (sidebar) i wywoływanie odpowiednich sekcji.
+        Main function of the Streamlit application.
+        Responsible for creating the sidebar menu and calling the appropriate sections.
     """
+
     st.sidebar.title("Navigation")
     sections = [
         "Introduction",
@@ -913,7 +926,7 @@ def main() -> None:
         "Summary and Conclusions",
         "Documentation"
     ]
-    selected_section = st.sidebar.radio("Przejdź do sekcji:", sections)
+    selected_section = st.sidebar.radio("Go to section:", sections)
 
     # Wczytanie danych tylko raz (jeżeli jeszcze nie ma w session_state)
     if "data" not in st.session_state:
