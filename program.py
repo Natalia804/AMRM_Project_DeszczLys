@@ -899,7 +899,7 @@ def main() -> None:
     st.sidebar.title("Navigation")
     sections = [
         "Introduction",
-        "Dataset description",
+        "Dataset Description",
         "Missing Data Removal and Outlier Analysis",
         "Train-Test Split",
         "Machine Learning Methods",
