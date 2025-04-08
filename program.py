@@ -474,21 +474,22 @@ def dzielenie_section() -> None:
 
 
 def metody_uczenia_section() -> None:
+   
     """
-    Wyświetla sekcję dotyczącą trenowania różnych metod uczenia maszynowego (Decision Tree, SVM, Random Forest):
-    - Wykonuje GridSearchCV
-    - Pokazuje najlepsze parametry
-    - Rysuje macierze konfuzji
-    - Wyświetla i porównuje metryki (accuracy, precision, recall, F1)
-    - Opcjonalnie analizuje SHAP
+        Displays the section for training different machine learning methods (Decision Tree, SVM, Random Forest):
+        - Performs GridSearchCV
+        - Shows the best parameters
+        - Plots confusion matrices
+        - Displays and compares metrics (accuracy, precision, recall, F1)
+        - Optionally analyzes SHAP values
     """
-    st.title("Metody uczenia maszynowego w identyfikacji demencji")
+    st.title("Machine Learning Methods for Dementia Identification")
 
-    st.write("Do optymalizacji hiperparametrów modeli użyto metody Grid search. Celem jest znalezienie najlepszej kombinacji wartości hiperparametrów, które maksymalizują wydajność modelu na zadanym zbiorze danych.")
-    
+    st.write("Grid search was used to optimize the model hyperparameters. The goal is to find the best combination of hyperparameter values that maximize model performance on the given dataset.")
+
     required_keys = ["X_train", "X_test", "y_train", "y_test"]
     if not all(k in st.session_state for k in required_keys):
-        st.error("Brak danych do uczenia maszynowego. Upewnij się, że poprzednie sekcje zostały wykonane.")
+        st.error("Missing data for machine learning. Make sure the previous sections have been completed.")
         st.stop()
 
     X_train = st.session_state["X_train"]
@@ -496,35 +497,33 @@ def metody_uczenia_section() -> None:
     y_train = st.session_state["y_train"]
     y_test = st.session_state["y_test"]
 
-    # ========== Drzewa Decyzyjne ========== #
-    st.header("Metoda 1: Drzewa Decyzyjne")
-    
+    # ========== Decision Trees ========== #
+    st.header("Method 1: Decision Trees")
+
     st.markdown("""
-    Drzewa decyzyjne to intuicyjna metoda uczenia maszynowego, która pozwala na modelowanie decyzji w sposób hierarchiczny.
-    Analizujemy m.in.:
-    - `max_depth`: Maksymalna głębokość drzewa decyzyjnego wpływa na złożoność modelu.
-    - `criterion`: Miara podziału danych (`gini` lub `entropy`). Wybór zależy od charakterystyki danych.
+    Decision Trees are an intuitive machine learning method that models decisions in a hierarchical structure.  
+    We analyze parameters such as:
+    - `max_depth`: The maximum depth of the decision tree, which affects the model's complexity.
+    - `criterion`: The data splitting measure (`gini` or `entropy`). The choice depends on the nature of the dataset.
     """)
-    
+
     param_grid_tree = {
         'max_depth': [3, 5, 7, 10],
         'criterion': ['gini', 'entropy']
     }
-    
-    # Tworzenie modelu
+
+    # Model training
     tree_model = DecisionTreeClassifier(random_state=42)
     grid_search_tree = GridSearchCV(tree_model, param_grid_tree, cv=5, scoring='f1', n_jobs=-1)
     grid_search_tree.fit(X_train, y_train)
 
-    # Najlepszy model 
+    # Best model
     best_tree_model = grid_search_tree.best_estimator_
     y_pred_tree = best_tree_model.predict(X_test)
-    
-    
 
-    st.write("Najlepsze parametry Drzewa Decyzyjnego:", grid_search_tree.best_params_)
+    st.write("Best parameters for Decision Tree:", grid_search_tree.best_params_)
 
-    st.subheader("Macierz konfuzji - Drzewo Decyzyjne")
+    st.subheader("Confusion Matrix – Decision Tree")
     fig, ax = plt.subplots()
     wykres_macierzy_konfuzji(y_test, y_pred_tree, ax=ax)
     st.pyplot(fig)
@@ -533,18 +532,18 @@ def metody_uczenia_section() -> None:
     tree_precision = precision_score(y_test, y_pred_tree)
     tree_recall = recall_score(y_test, y_pred_tree)
     tree_f1 = f1_score(y_test, y_pred_tree)
-    
-     # Wyświetlanie wyników
+
+    # Displaying the metrics
     metrics_data = {
-        "Metryka": ["Dokładność", "Precyzja", "Czułość", "F1-score"],
-        "Wartość": [tree_accuracy, tree_precision, tree_recall, tree_f1]
+        "Metric": ["Accuracy", "Precision", "Recall", "F1-score"],
+        "Value": [tree_accuracy, tree_precision, tree_recall, tree_f1]
     }
     metrics_df = pd.DataFrame(metrics_data)
 
     st.table(metrics_df)
-    
-    # Wizualizacja drzewa decyzyjnego 
-    st.subheader("Wizualizacja Drzewa Decyzyjnego")
+
+    # Visualizing the Decision Tree
+    st.subheader("Decision Tree Visualization")
     fig_tree, ax_tree = plt.subplots(figsize=(15, 8))
     plot_tree(
         best_tree_model,
@@ -555,15 +554,16 @@ def metody_uczenia_section() -> None:
     )
     st.pyplot(fig_tree)
 
-    # ========== SVM ========== #
-    st.header("Metoda 2: Support Vector Machines (SVM)")
-    st.markdown("""
-    Support Vector Machines (SVM) znajduje optymalną hiperpłaszczyznę do separacji klas. 
-    W celu znalezienia najlepszych parametrów zastosowano Grid Search. Parametry:
-    - `C`: Regularizacja (kontrola nadmiarowego dopasowania).
-    - `kernel`: Typ jądra (np. 'linear', 'rbf').
-    """)
     
+    # ========== SVM ========== #
+    st.header("Method 2: Support Vector Machines (SVM)")
+    st.markdown("""
+    Support Vector Machines (SVM) aim to find the optimal hyperplane to separate classes.  
+    Grid Search was used to find the best parameters. Parameters:
+    - `C`: Regularization (controls overfitting).
+    - `kernel`: Kernel type (e.g., 'linear', 'rbf').
+    """)
+
     param_grid_svm = {
         'C': [0.1, 1, 10],
         'kernel': ['linear', 'rbf']
@@ -575,9 +575,9 @@ def metody_uczenia_section() -> None:
     best_svm_model = grid_search_svm.best_estimator_
     y_pred_svm = best_svm_model.predict(X_test)
 
-    st.write("Najlepsze parametry SVM:", grid_search_svm.best_params_)
+    st.write("Best SVM parameters:", grid_search_svm.best_params_)
 
-    st.subheader("Macierz konfuzji - SVM")
+    st.subheader("Confusion Matrix – SVM")
     fig, ax = plt.subplots()
     wykres_macierzy_konfuzji(y_test, y_pred_svm, ax=ax)
     st.pyplot(fig)
@@ -586,25 +586,25 @@ def metody_uczenia_section() -> None:
     svm_precision = precision_score(y_test, y_pred_svm)
     svm_recall = recall_score(y_test, y_pred_svm)
     svm_f1 = f1_score(y_test, y_pred_svm)
-    
-    # Wyświetlanie wyników
+
+    # Displaying results
     metrics_data_svm = {
-        "Metryka": ["Dokładność", "Precyzja", "Czułość", "F1-score"],
-        "Wartość": [svm_accuracy, svm_precision, svm_recall, svm_f1]
+        "Metric": ["Accuracy", "Precision", "Recall", "F1-score"],
+        "Value": [svm_accuracy, svm_precision, svm_recall, svm_f1]
     }
     metrics_df_svm = pd.DataFrame(metrics_data_svm)
 
     st.table(metrics_df_svm)
 
     # ========== Random Forest ========== #
-    st.header("Metoda 3: Random Forest")
+    st.header("Method 3: Random Forest")
     st.markdown("""
-    Random Forest to zespół drzew decyzyjnych, które tworzą silny model predykcyjny. 
-    W celu znalezienia najlepszych parametrów zastosowano Grid Search:
-    - `n_estimators`: Liczba drzew w lesie.
-    - `max_depth`: Maksymalna głębokość drzew.
+    Random Forest is an ensemble of decision trees that creates a strong predictive model.  
+    Grid Search was used to find the best parameters:
+    - `n_estimators`: Number of trees in the forest.
+    - `max_depth`: Maximum depth of the trees.
     """)
-    
+
     param_grid_rf = {
         'n_estimators': [50, 100, 200],
         'max_depth': [5, 10, 20]
@@ -616,9 +616,9 @@ def metody_uczenia_section() -> None:
     best_rf_model = grid_search_rf.best_estimator_
     y_pred_rf = best_rf_model.predict(X_test)
 
-    st.write("Najlepsze parametry Random Forest:", grid_search_rf.best_params_)
+    st.write("Best Random Forest parameters:", grid_search_rf.best_params_)
 
-    st.subheader("Macierz konfuzji - Random Forest")
+    st.subheader("Confusion Matrix – Random Forest")
     fig, ax = plt.subplots()
     wykres_macierzy_konfuzji(y_test, y_pred_rf, ax=ax)
     st.pyplot(fig)
@@ -627,15 +627,16 @@ def metody_uczenia_section() -> None:
     rf_precision = precision_score(y_test, y_pred_rf)
     rf_recall = recall_score(y_test, y_pred_rf)
     rf_f1 = f1_score(y_test, y_pred_rf)
-    
-    # Wyświetlanie wyników
+
+    # Displaying results
     metrics_data_rf = {
-        "Metryka": ["Dokładność", "Precyzja", "Czułość", "F1-score"],
-        "Wartość": [rf_accuracy, rf_precision, rf_recall, rf_f1]
+        "Metric": ["Accuracy", "Precision", "Recall", "F1-score"],
+        "Value": [rf_accuracy, rf_precision, rf_recall, rf_f1]
     }
     metrics_df_rf = pd.DataFrame(metrics_data_rf)
 
     st.table(metrics_df_rf)
+
 
     # ========== Summary of Results ========== #
     st.subheader("Model Comparison")
