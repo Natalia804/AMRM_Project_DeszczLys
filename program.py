@@ -166,75 +166,74 @@ def wprowadzenie_section() -> None:
 
 def charakterystyka_danych_section(data: pd.DataFrame) -> None:
     """
-    Wyświetla sekcję charakterystyki danych:
-    - Statystyki opisowe
-    - Rozkład zmiennej docelowej Group
-    - Przykładowy podgląd danych
-    - Wykresy korelacji
-    - Boxploty wybranych zmiennych
+    Displays the data characterization section:
+    - Descriptive statistics
+    - Distribution of the target variable Group
+    - Sample data preview
+    - Correlation plots
+    - Boxplots of selected variables
     """
-    st.title("Charakterystyka Zbioru Danych")
+    st.title("Dataset Characteristics")
     st.markdown("""
-    Zbiór danych zawiera informacje medyczne, socjo-ekonomiczne oraz diagnozę demencji u pacjentów. 
-    Dane te zostały zaczerpnięte z <a href="https://www.kaggle.com/datasets/brsdincer/alzheimer-features/data" target="_blank" style="color: #007BFF; font-weight: bold;">Kaggle</a>, bazując na badaniach wykorzystujących uczenie maszynowe do analizy demencji.
+    The dataset contains medical, socio-economic information and dementia diagnosis of patients.
+    This data was taken from <a href="https://www.kaggle.com/datasets/brsdincer/alzheimer-features/data" target="_blank" style="color: #007BFF; font-weight: bold;">Kaggle</a>, based on studies using machine learning to analyze dementia.
     """, unsafe_allow_html=True)
 
-    st.subheader("Zmienna objaśniana (Group)")
+    st.subheader("Target Variable (Group)")
     st.markdown("""
-    <span style="color: #1f77b4; font-weight: bold;">Group</span>: Diagnoza choroby:
+    <span style="color: #1f77b4; font-weight: bold;">Group</span>: Disease diagnosis:
     <ul>
-      <li><code style="color: #2ca02c;">Demented</code>: Osoby zdiagnozowane z demencją.</li>
-      <li><code style="color: #ff7f0e;">Nondemented</code>: Osoby bez demencji.</li>
-      <li><code style="color: #d62728;">Converted</code>: Osoby, które po pewnym czasie zostały zaklasyfikowane jako zdrowe.</li>
+      <li><code style="color: #2ca02c;">Demented</code>: Individuals diagnosed with dementia.</li>
+      <li><code style="color: #ff7f0e;">Nondemented</code>: Individuals without dementia.</li>
+      <li><code style="color: #d62728;">Converted</code>: Individuals who were later classified as healthy.</li>
     </ul>
     """, unsafe_allow_html=True)
     
     
-    st.subheader("Zmienne objaśniające")
+    st.subheader("Explanatory Variables")
     st.markdown("""
-    1. <span style="color: #1f77b4; font-weight: bold;">is_male</span>: Zmienna określająca płeć badanego.
-    2. <span style="color: #1f77b4; font-weight: bold;">Age</span>: Wiek osoby.
-    3. <span style="color: #1f77b4; font-weight: bold;">EDUC (Years of Education)</span>: Liczba lat edukacji.
-    4. <span style="color: #1f77b4; font-weight: bold;">SES (Socioeconomic Status)</span>: Status społeczno-ekonomiczny (1-5, gdzie 5 to najwyższy status).
-    5. <span style="color: #1f77b4; font-weight: bold;">MMSE (Mini Mental State Examination)</span>: Skala oceniająca funkcje poznawcze (pamięć, uwaga, orientacja przestrzenna).
-    6. <span style="color: #1f77b4; font-weight: bold;">CDR (Clinical Dementia Rating)</span>: Skala oceny zaawansowania demencji.
-    7. <span style="color: #1f77b4; font-weight: bold;">eTIV (Estimated Total Intracranial Volume)</span>: Szacowana całkowita objętość wewnątrzczaszkowa.
-    8. <span style="color: #1f77b4; font-weight: bold;">nWBV (Normalized Whole Brain Volume)</span>: Znormalizowana objętość całego mózgu.
-    9. <span style="color: #1f77b4; font-weight: bold;">ASF (Atlas Scaling Factor)</span>: Czynnik skalowania atlasu używany do dopasowania obrazu mózgu do wzorca.
+    1. <span style="color: #1f77b4; font-weight: bold;">is_male</span>: Variable indicating gender of the subject.
+    2. <span style="color: #1f77b4; font-weight: bold;">Age</span>: Age of the person.
+    3. <span style="color: #1f77b4; font-weight: bold;">EDUC (Years of Education)</span>: Number of years of education.
+    4. <span style="color: #1f77b4; font-weight: bold;">SES (Socioeconomic Status)</span>: Socioeconomic status (1–5, where 5 is the highest).
+    5. <span style="color: #1f77b4; font-weight: bold;">MMSE (Mini Mental State Examination)</span>: Scale assessing cognitive functions (memory, attention, spatial orientation).
+    6. <span style="color: #1f77b4; font-weight: bold;">CDR (Clinical Dementia Rating)</span>: Scale assessing dementia severity.
+    7. <span style="color: #1f77b4; font-weight: bold;">eTIV (Estimated Total Intracranial Volume)</span>: Estimated total intracranial volume.
+    8. <span style="color: #1f77b4; font-weight: bold;">nWBV (Normalized Whole Brain Volume)</span>: Normalized whole brain volume.
+    9. <span style="color: #1f77b4; font-weight: bold;">ASF (Atlas Scaling Factor)</span>: Atlas scaling factor used to fit the brain image to the template.
     """, unsafe_allow_html=True)
     
-    # Źródła danych
-    st.subheader("Źródła Danych")
+    # Data sources
+    st.subheader("Data Sources")
     st.markdown("""
     1. <a href="https://cordis.europa.eu/article/id/428863-mind-reading-software-finds-hidden-signs-of-dementia/pl" target="_blank" style="color: #007BFF; font-weight: bold;">Cordis.europa.eu</a>  
     2. <a href="https://www.sciencedirect.com/science/article/pii/S2352914819300917?via%3Dihub" target="_blank" style="color: #007BFF; font-weight: bold;">ScienceDirect - *Machine learning in medicine: Performance calculation of dementia prediction by support vector machines (SVM)*</a>  
     3. <a href="https://www.kaggle.com/datasets/brsdincer/alzheimer-features/data" target="_blank" style="color: #007BFF; font-weight: bold;">Kaggle Dataset</a>
     """, unsafe_allow_html=True)
 
-
-    st.subheader("Podgląd pierwszych wierszy zbioru danych:")
+    st.subheader("Preview of the First Rows of the Dataset:")
     st.dataframe(data.head())
 
-    st.subheader("Podstawowe statystyki:")
+    st.subheader("Basic Statistics:")
     st.write(data.describe())
 
-    # Brakujące dane
-    st.subheader("Brakujące dane:")
+    # Missing data
+    st.subheader("Missing Data:")
     missing_values = data.isnull().sum()
     missing_percent = (missing_values / len(data)) * 100
-    st.write("Braki danych w poszczególnych kolumnach (w procentach):")
+    st.write("Missing values in individual columns (in percent):")
     st.bar_chart(missing_percent)
-    st.write("Braki widzimy na niskim poziomie.")
+    st.write("We observe a low level of missing data.")
 
-    # Rozkład zmiennej Group
-    st.header("Dytrybucja zmiennej objaśniającej Group")
+    # Distribution of the Group variable
+    st.header("Distribution of the Target Variable Group")
     group_distribution = data['Group'].value_counts(normalize=True)
     st.bar_chart(group_distribution)
     st.write(group_distribution)
-    st.write("Będziemy w analizie głównie korzystać z Demented i Nondemented, a różnica proporcji między nimi nie jest duża.")
+    st.write("In our analysis, we will mainly use Demented and Nondemented, and the proportion difference between them is not large.")
 
-    # Relacja między płcią a demencją
-    st.subheader("Relacja między płcią a demencją")
+    # Gender vs dementia
+    st.subheader("Relationship Between Gender and Dementia")
     if 'is_male' in data.columns and 'is_demented' in data.columns:
         matrix_demented = [
             [len(data[(data['is_male'] == 1) & (data['is_demented'] == 1)]),
@@ -247,28 +246,25 @@ def charakterystyka_danych_section(data: pd.DataFrame) -> None:
             index=['Male', 'Female'],
             columns=['Demented', 'Not Demented']
         )
-        st.write("Tabela relacji płci a demencja:")
+        st.write("Table: Gender vs Dementia:")
         st.dataframe(matrix_demented_df)
 
         fig, ax = plt.subplots()
         matrix_demented_df.plot(kind='bar', ax=ax, color=['indigo', 'gold'])
-        ax.set_ylabel("Liczba obserwacji")
-        ax.set_title("Relacja: Płeć a Demencja")
+        ax.set_ylabel("Number of Observations")
+        ax.set_title("Relationship: Gender vs Dementia")
         st.pyplot(fig)
         
     st.markdown("""
-    Liczba pacjentów z demencją w danych jest podobna. Tutaj proporcja jest zupełnie inna niż we
-    wcześniejszym wykresie. Dane okazują się próbką niereprezentatywną, ponieważ aż **2/3
-    populacji dotkniętej chorobą Alzheimera to kobiety** (1), co nie odzwierciedla nasz zestaw danych.
-    Natomiast więcej jest obserwacji pacjentek żeńskich (**58%** to kobiety). Co ciekawe, wiąże się to
-    między innymi z faktem, że objawy **AD rozwijają się z wiekiem**, natomiast mężczyźni zwykle
-    żyją mniej niż kobiety (2).\n
+    The number of dementia patients in the data is similar. Here the proportion is completely different than in the earlier chart.
+    The data appears unrepresentative, because **2/3 of people affected by Alzheimer’s are women** (1), which is not reflected in our dataset.
+    Interestingly, there are more female patients (**58%** are women). This may be related to the fact that **AD symptoms progress with age**, while men tend to live shorter lives than women (2).\n
     (1) [Castro-Aldrete L., *Sex and gender considerations in Alzheimer’s disease: The Women’s Brain Project contribution*](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10097993/) \n
     (2) [Sangha K., *Gender differences in risk factors for transition from mild cognitive impairment to Alzheimer’s disease: A CREDOS study*](https://doi.org/10.1016/J.COMPPSYCH.2015.07.002)
     """)
 
-    # Macierz korelacji
-    st.subheader("Macierz korelacji (zmienne numeryczne)")
+    # Correlation matrix
+    st.subheader("Correlation Matrix (Numerical Variables)")
     numeric_data = data.select_dtypes(include=['float64', 'int64'])
     if not numeric_data.empty:
         corr_matrix = numeric_data.corr()
@@ -278,62 +274,26 @@ def charakterystyka_danych_section(data: pd.DataFrame) -> None:
                     mask=mask, linewidths=0.5, vmin=-1, vmax=1, ax=ax)
         st.pyplot(fig)
     else:
-        st.warning("Brak zmiennych numerycznych w zbiorze danych.")
+        st.warning("No numerical variables in the dataset.")
 
     
     st.markdown("""
-    Z mapy ciepła możemy wywnioskować, że interesująca nas korelacja zachodzi pomiędzy:
+    From the heatmap we can conclude that interesting correlations occur between:
     - **nWBV – Age**
     - **nWBV – MMSE**
     - **nWBV – eTIV**
     - **ASF – eTIV**
 
-    Zmienna **nWBV** jest stworzona ze zmiennej **eTIV**, także ich korelacja nie dziwi. Z literatury
-    również wynika, że korelacja pomiędzy **Age** i **nWBV** wynika z procesu obumierania tkanki w
-    mózgu wraz z wiekiem. Bardzo wysoka korelacja **ASF** i **eTIV** wynika z faktu, że **ASF** jest
-    indeksem utworzonym z wartości **eTIV**.
-    
-    Jeśli natomiast weźmiemy pod lupę korelacje zmiennych objasniających z objaśnianymi, zauważamy 
-    tu znacznie wyższą bezwzględną korelację zmiennej is_demented ze zmiennymi
-    MMSE, nWBV, is_male oraz SES, a także, choć znacznie niższe, korelacje zmiennych Age i MMSE z
-    klasyfikatorem is_converted. Na tej podstawie można stwierdzić zależność stwierdzonych
-    zachorowań od poziomu umiejętności poznawczych, znormalizowanej objętości mózgu, płci oraz statusu ekonomicznego,
-    natomiast wiek oraz umiejętności poznawcze opiszemy jako istotnie skorelowane ze
-    zmienną is_converted.
+    The **nWBV** variable is derived from **eTIV**, so their correlation is expected. Literature also indicates that the correlation between **Age** and **nWBV** results from brain tissue atrophy with age. The very high correlation between **ASF** and **eTIV** results from **ASF** being an index derived from **eTIV**.
+
+    When examining the correlations between explanatory and target variables, we observe higher absolute correlation of **is_demented** with MMSE, nWBV, is_male and SES, as well as weaker correlations of Age and MMSE with **is_converted**. This suggests that dementia diagnosis may be related to cognitive ability, brain volume, gender, and socioeconomic status, while age and cognitive ability are significantly correlated with **is_converted**.
     """)
-    
 
-    # Boxploty dla wybranych kolumn
-    st.subheader("Dystrybucja zmiennych numerycznych względem grup diagnozy")
-    st.write("Interaktywny wykres pozwala na eksploracje zmiennych.")
-    columns_to_plot = ['Age', 'MMSE', 'eTIV', 'nWBV', 'ASF']
-    available_columns = [col for col in columns_to_plot if col in data.columns]
+    # Boxplots for selected columns
+    st.subheader("Distribution of Numerical Variables by Diagnosis Group")
+    st.write("Interactive chart allows exploration of variables.")
+    columns_to_plot = ['Age]()
 
-    if available_columns:
-        selected_column = st.selectbox("Wybierz kolumnę do wizualizacji:", available_columns)
-        fig, ax = plt.subplots(figsize=(8, 6))
-        sns.boxplot(data=data, x='Group', y=selected_column, ax=ax)
-        st.pyplot(fig)
-    else:
-        st.warning("Brak dostępnych zmiennych do wizualizacji.")
-
-         
-    interpretacja = """
-    Grupa Converted ma większy zakres wieku, i osoby z tej grupy diagnostycznej wydają się być starsze, ale generlanie nie widać drastycznych różnic między gruopami. Wyniki MMSE w grupie Demented są znacząco niższe, z większą zmiennością i wartościami odstającymi, podczas gdy grupy Nondemented i Converted mają zbliżone wyniki. Grupa Nondemented charakteryzuje się najwyższym medianowym eTIV, a grupa Converted najniższym, z wartościami odstającymi w grupie Demented. Najniższy mediana nWBV obserwowana jest w grupie Demented, co wskazuje na większe zmniejszenie objętości mózgu, podczas gdy grupy Nondemented i Converted są bardziej zbliżone. Mediana ASF pozostaje podobna między grupami, ale grupa Nondemented wykazuje większy rozkład i wartości odstające, z najmniejszym zakresem w grupie Converted.
-    """
-
-    st.header("Interpretacja Wykresów")
-    st.write(interpretacja)
-    
-    # Zapisanie przetworzonych danych do session_state
-    selected_columns = ['nWBV', 'MMSE', 'eTIV', 'SES', 'is_demented', 'is_male']
-    
-
-    available_columns = [col for col in selected_columns if col in data.columns]
-    if available_columns:
-        st.session_state.data_selected = data[available_columns]
-    else:
-        st.error("Brak wymaganych kolumn do zapisania przetworzonych danych.")
 
 def braki_outliery_section() -> None:
     """
