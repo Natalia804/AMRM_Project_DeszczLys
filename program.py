@@ -289,10 +289,36 @@ def charakterystyka_danych_section(data: pd.DataFrame) -> None:
     When examining the correlations between explanatory and target variables, we observe higher absolute correlation of **is_demented** with MMSE, nWBV, is_male and SES, as well as weaker correlations of Age and MMSE with **is_converted**. This suggests that dementia diagnosis may be related to cognitive ability, brain volume, gender, and socioeconomic status, while age and cognitive ability are significantly correlated with **is_converted**.
     """)
 
+   
     # Boxplots for selected columns
     st.subheader("Distribution of Numerical Variables by Diagnosis Group")
     st.write("Interactive chart allows exploration of variables.")
-    columns_to_plot = ['Age]()
+    columns_to_plot = ['Age', 'MMSE', 'eTIV', 'nWBV', 'ASF']
+    available_columns = [col for col in columns_to_plot if col in data.columns]
+
+    if available_columns:
+        selected_column = st.selectbox("Select column to visualize:", available_columns)
+        fig, ax = plt.subplots(figsize=(8, 6))
+        sns.boxplot(data=data, x='Group', y=selected_column, ax=ax)
+        st.pyplot(fig)
+    else:
+        st.warning("No available variables to visualize.")
+
+         
+    interpretacja = """
+    The Converted group has a wider age range and its individuals appear older, but overall, there are no drastic differences between groups. MMSE scores are significantly lower in the Demented group, with higher variability and outliers, while Nondemented and Converted groups have similar scores. The Nondemented group shows the highest median eTIV, and Converted the lowest, with outliers in the Demented group. The lowest median nWBV is in the Demented group, indicating greater brain volume loss, while Nondemented and Converted groups are more similar. Median ASF is similar across groups, but the Nondemented group shows more spread and outliers, with the smallest range in the Converted group.
+    """
+
+    st.header("Interpretation of the Charts")
+    st.write(interpretacja)
+    
+    # Save selected columns to session_state
+    selected_columns = ['nWBV', 'MMSE', 'eTIV', 'SES', 'is_demented', 'is_male']
+    available_columns = [col for col in selected_columns if col in data.columns]
+    if available_columns:
+        st.session_state.data_selected = data[available_columns]
+    else:
+        st.error("Required columns for saving processed data are missing.")
 
 
 def braki_outliery_section() -> None:
