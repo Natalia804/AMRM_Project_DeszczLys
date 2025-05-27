@@ -780,8 +780,7 @@ def metody_uczenia_section() -> None:
 
     # ---------- Cross-validation – Random Forest ----------
     rf_cv_df = cv_report(best_rf_model, X_train, y_train, "Random Forest")
-    st.subheader("Cross-validation (5 × StratifiedKFold) – Random Forest")
-    st.table(rf_cv_df)
+    #st.table(rf_cv_df)
 
 
     # Random Forest
