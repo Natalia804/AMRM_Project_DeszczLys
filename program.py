@@ -15,7 +15,9 @@ from sklearn.metrics import (
     confusion_matrix,
     precision_score,
     recall_score,
-    f1_score
+    f1_score,
+    roc_curve,
+    auc
 )
 import shap
 
@@ -561,6 +563,22 @@ def metody_uczenia_section() -> None:
     metrics_df = pd.DataFrame(metrics_data)
 
     st.table(metrics_df)
+
+
+    st.subheader("ROC Curve – Decision Tree")
+    y_score_tree = best_tree_model.predict_proba(X_test)[:, 1]       
+    fpr_tree, tpr_tree, _ = roc_curve(y_test, y_score_tree)
+    roc_auc_tree = auc(fpr_tree, tpr_tree)
+    
+    fig, ax = plt.subplots()
+    ax.plot(fpr_tree, tpr_tree, label=f"AUC = {roc_auc_tree:0.2f}")
+    ax.plot([0, 1], [0, 1], "k--")
+    ax.set_xlabel("False Positive Rate")
+    ax.set_ylabel("True Positive Rate")
+    ax.set_title("ROC – Decision Tree")
+    ax.legend(loc="lower right")
+    st.pyplot(fig)
+
 
     # Visualizing the Decision Tree
     st.subheader("Decision Tree Visualization")
