@@ -311,6 +311,24 @@ def charakterystyka_danych_section(data: pd.DataFrame) -> None:
 
     st.header("Interpretation of the Charts")
     st.write(interpretacja)
+
+    
+    # Interactive scatterplot tool
+    st.subheader("Explore Relationships Between Variables (Scatterplot)")
+    st.markdown("Select any two numerical variables to observe their relationship.")
+
+    numeric_columns = list(numeric_data.columns)
+    if len(numeric_columns) >= 2:
+        x_var = st.selectbox("Select X-axis variable:", numeric_columns, key='x_scatter')
+        y_var = st.selectbox("Select Y-axis variable:", numeric_columns, key='y_scatter')
+
+        fig, ax = plt.subplots(figsize=(8, 6))
+        sns.scatterplot(data=data, x=x_var, y=y_var, hue='Group', palette='deep', ax=ax)
+        ax.set_title(f"Scatterplot: {y_var} vs {x_var}")
+        st.pyplot(fig)
+    else:
+        st.warning("Not enough numerical columns to generate scatterplots.")
+
     
     # Save selected columns to session_state
     selected_columns = ['nWBV', 'MMSE', 'eTIV', 'SES', 'is_demented', 'is_male']
