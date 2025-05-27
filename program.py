@@ -436,8 +436,11 @@ def braki_outliery_section() -> None:
     st.write("Summary of the number of outliers in each column:")
     st.dataframe(outliers_summary_df)
 
+    # Deleting outliers
+    data = data[(np.abs(StandardScaler().fit_transform(data.select_dtypes(include=['float64', 'int64']))) < 3).all(axis=1)]
+
     st.write("""
-    Due to the medical nature of the problem, outliers were not removed in order to retain potentially important observations.
+    Due to the medical nature of the problem, we were debating wheater to delete them (because they could be potentially important observations), but after investigation of plots we decided to do so. 
     """)
 
 
