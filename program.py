@@ -6,7 +6,12 @@ import matplotlib.pyplot as plt
 
 from scipy.stats import zscore
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.model_selection import (
+    train_test_split,
+    GridSearchCV,
+    cross_validate, 
+    StratifiedKFold
+)
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.ensemble import RandomForestClassifier
@@ -519,6 +524,40 @@ def metody_uczenia_section() -> None:
     y_train = st.session_state["y_train"]
     y_test = st.session_state["y_test"]
 
+    # ---------- Cross-validation helper ----------
+    skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+    
+    def cv_report(model, X, y, name: str):
+        """
+        Runs 5-fold StratifiedKFold on the *training* data only
+        and returns a one-row DataFrame with mean scores.
+        """
+        cv_out = cross_validate(
+            model,
+            X,
+            y,
+            cv=skf,
+            scoring={
+                "ACC": "accuracy",
+                "PREC": "precision",
+                "REC": "recall",
+                "F1": "f1",
+            },
+            n_jobs=-1,
+            return_train_score=False,
+        )
+        df = (
+            pd.DataFrame(cv_out)
+            .drop(columns="fit_time")
+            .rename(columns=lambda c: c.replace("test_", ""))
+            .mean()
+            .to_frame(name="Mean")
+            .T.assign(Model=name)
+            .set_index("Model")
+            .round(3)
+        )
+        return df
+
     # ========== Decision Trees ========== #
     st.header("Method 1: Decision Trees")
 
@@ -554,6 +593,12 @@ def metody_uczenia_section() -> None:
     tree_precision = precision_score(y_test, y_pred_tree)
     tree_recall = recall_score(y_test, y_pred_tree)
     tree_f1 = f1_score(y_test, y_pred_tree)
+
+        # ---------- Cross-validation – Decision Tree ----------
+    dt_cv_df = cv_report(best_tree_model, X_train, y_train, "Decision Tree")
+    st.subheader("Cross-validation (5 × StratifiedKFold) – Decision Tree")
+    st.table(dt_cv_df)
+
 
     # Displaying the metrics
     metrics_data = {
