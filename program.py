@@ -233,7 +233,7 @@ def charakterystyka_danych_section(data: pd.DataFrame) -> None:
     st.bar_chart(missing_percent)
     st.write("We observe a low level of missing data.")
 
-       # Boxplots for selected columns
+    # Boxplots for selected columns
     st.subheader("Distribution of Numerical Variables by Diagnosis Group")
     st.write("Interactive chart allows exploration of variables.")
     columns_to_plot = ['Age', 'MMSE', 'eTIV', 'nWBV', 'ASF']
@@ -319,9 +319,6 @@ def charakterystyka_danych_section(data: pd.DataFrame) -> None:
 
     When examining the correlations between explanatory and target variables, we observe higher absolute correlation of **is_demented** with MMSE, nWBV, is_male and SES, as well as weaker correlations of Age and MMSE with **is_converted**. This suggests that dementia diagnosis may be related to cognitive ability, brain volume, gender, and socioeconomic status, while age and cognitive ability are significantly correlated with **is_converted**.
     """)
-
-   
- 
     
     # Interactive scatterplot tool
     st.subheader("Explore Relationships Between Variables (Scatterplot)")
@@ -445,6 +442,20 @@ def braki_outliery_section() -> None:
     outliers_summary_df = pd.DataFrame(outliers_summary)
     st.write("Summary of the number of outliers in each column:")
     st.dataframe(outliers_summary_df)
+
+    mask_no_outliers = (np.abs(data_standardized) <= 3).all(axis=1)
+    
+
+    data_no_outliers = data_numeric_cleaned[mask_no_outliers]
+    
+    st.subheader("Data after removing Z-score outliers")
+    st.write(f"Rows removed: {len(data_numeric_cleaned) - mask_no_outliers.sum()}")
+    st.dataframe(data_no_outliers.head())
+    
+
+    data_cleaned = data_no_outliers.reset_index(drop=True)
+    st.session_state.data_cleaned = data_cleaned
+
 
     st.write("""
     Due to the medical nature of the problem, we were debating wheater to delete them (because they could be potentially important observations), but after investigation of plots we decided to do so. 
