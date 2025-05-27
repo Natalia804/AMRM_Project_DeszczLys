@@ -548,7 +548,7 @@ def metody_uczenia_section() -> None:
         )
         df = (
             pd.DataFrame(cv_out)
-            .drop(columns="fit_time")
+            .drop(columns=["fit_time", "score_time"])
             .rename(columns=lambda c: c.replace("test_", ""))
             .mean()
             .to_frame(name="Mean")
@@ -594,10 +594,28 @@ def metody_uczenia_section() -> None:
     tree_recall = recall_score(y_test, y_pred_tree)
     tree_f1 = f1_score(y_test, y_pred_tree)
 
-        # ---------- Cross-validation – Decision Tree ----------
+    # ---------- Cross-validation – Decision Tree ----------
     dt_cv_df = cv_report(best_tree_model, X_train, y_train, "Decision Tree")
     st.subheader("Cross-validation (5 × StratifiedKFold) – Decision Tree")
     st.table(dt_cv_df)
+
+        # ---------- Combined single table – Decision Tree ----------
+    combined_dt = pd.DataFrame(
+        {
+            "Test set":   [tree_accuracy, tree_precision, tree_recall, tree_f1],
+            "CV mean":    [
+                dt_cv_df.loc["Decision Tree", "ACC"],
+                dt_cv_df.loc["Decision Tree", "PREC"],
+                dt_cv_df.loc["Decision Tree", "REC"],
+                dt_cv_df.loc["Decision Tree", "F1"],
+            ],
+        },
+        index=["Accuracy", "Precision", "Recall", "F1-score"],
+    ).round(3)
+    
+    st.subheader("Decision Tree – Test vs. 5-fold CV")
+    st.table(combined_dt)
+
 
 
     # Displaying the metrics
