@@ -634,6 +634,22 @@ def metody_uczenia_section() -> None:
 
     st.table(metrics_df_svm)
 
+    # ---------- ROC – SVM ----------
+    st.subheader("ROC Curve – SVM")
+    y_score_svm = best_svm_model.predict_proba(X_test)[:, 1]
+    fpr_svm, tpr_svm, _ = roc_curve(y_test, y_score_svm)
+    roc_auc_svm = auc(fpr_svm, tpr_svm)
+    
+    fig, ax = plt.subplots()
+    ax.plot(fpr_svm, tpr_svm, label=f"AUC = {roc_auc_svm:0.2f}")
+    ax.plot([0, 1], [0, 1], "k--")
+    ax.set_xlabel("False Positive Rate")
+    ax.set_ylabel("True Positive Rate")
+    ax.set_title("ROC – SVM")
+    ax.legend(loc="lower right")
+    st.pyplot(fig)
+
+
     # ========== Random Forest ========== #
     st.header("Method 3: Random Forest")
     st.markdown("""
@@ -674,6 +690,22 @@ def metody_uczenia_section() -> None:
     metrics_df_rf = pd.DataFrame(metrics_data_rf)
 
     st.table(metrics_df_rf)
+    
+    # ---------- ROC – Random Forest ----------
+    st.subheader("ROC Curve – Random Forest")
+    y_score_rf = best_rf_model.predict_proba(X_test)[:, 1]
+    fpr_rf, tpr_rf, _ = roc_curve(y_test, y_score_rf)
+    roc_auc_rf = auc(fpr_rf, tpr_rf)
+    
+    fig, ax = plt.subplots()
+    ax.plot(fpr_rf, tpr_rf, label=f"AUC = {roc_auc_rf:0.2f}")
+    ax.plot([0, 1], [0, 1], "k--")
+    ax.set_xlabel("False Positive Rate")
+    ax.set_ylabel("True Positive Rate")
+    ax.set_title("ROC – Random Forest")
+    ax.legend(loc="lower right")
+    st.pyplot(fig)
+
 
 
     # ========== Summary of Results ========== #
@@ -711,7 +743,19 @@ def metody_uczenia_section() -> None:
     plt.xticks(rotation=0)
     st.pyplot(fig)
 
-           
+    # ---------- Combined ROC Curves ----------
+    st.subheader("ROC Curves – Model Comparison")
+    fig, ax = plt.subplots()
+    ax.plot(fpr_tree, tpr_tree, label=f"Decision Tree (AUC = {roc_auc_tree:0.2f})")
+    ax.plot(fpr_svm,  tpr_svm,  label=f"SVM (AUC = {roc_auc_svm:0.2f})")
+    ax.plot(fpr_rf,   tpr_rf,   label=f"Random Forest (AUC = {roc_auc_rf:0.2f})")
+    ax.plot([0, 1], [0, 1], "k--")
+    ax.set_xlabel("False Positive Rate")
+    ax.set_ylabel("True Positive Rate")
+    ax.set_title("ROC Curve Comparison")
+    ax.legend(loc="lower right")
+    st.pyplot(fig)
+      
     
     
     # Results Interpretation
