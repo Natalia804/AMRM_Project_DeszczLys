@@ -225,6 +225,29 @@ def charakterystyka_danych_section(data: pd.DataFrame) -> None:
     st.bar_chart(missing_percent)
     st.write("We observe a low level of missing data.")
 
+       # Boxplots for selected columns
+    st.subheader("Distribution of Numerical Variables by Diagnosis Group")
+    st.write("Interactive chart allows exploration of variables.")
+    columns_to_plot = ['Age', 'MMSE', 'eTIV', 'nWBV', 'ASF']
+    available_columns = [col for col in columns_to_plot if col in data.columns]
+
+    if available_columns:
+        selected_column = st.selectbox("Select column to visualize:", available_columns)
+        fig, ax = plt.subplots(figsize=(8, 6))
+        sns.boxplot(data=data, x='Group', y=selected_column, ax=ax)
+        st.pyplot(fig)
+    else:
+        st.warning("No available variables to visualize.")
+
+         
+    interpretacja = """
+    The Converted group has a wider age range and its individuals appear older, but overall, there are no drastic differences between groups. MMSE scores are significantly lower in the Demented group, with higher variability and outliers, while Nondemented and Converted groups have similar scores. The Nondemented group shows the highest median eTIV, and Converted the lowest, with outliers in the Demented group. The lowest median nWBV is in the Demented group, indicating greater brain volume loss, while Nondemented and Converted groups are more similar. Median ASF is similar across groups, but the Nondemented group shows more spread and outliers, with the smallest range in the Converted group.
+    """
+
+    st.header("Interpretation of the Charts")
+    st.write(interpretacja)
+
+
     # Distribution of the Group variable
     st.header("Distribution of the Target Variable Group")
     group_distribution = data['Group'].value_counts(normalize=True)
@@ -290,28 +313,7 @@ def charakterystyka_danych_section(data: pd.DataFrame) -> None:
     """)
 
    
-    # Boxplots for selected columns
-    st.subheader("Distribution of Numerical Variables by Diagnosis Group")
-    st.write("Interactive chart allows exploration of variables.")
-    columns_to_plot = ['Age', 'MMSE', 'eTIV', 'nWBV', 'ASF']
-    available_columns = [col for col in columns_to_plot if col in data.columns]
-
-    if available_columns:
-        selected_column = st.selectbox("Select column to visualize:", available_columns)
-        fig, ax = plt.subplots(figsize=(8, 6))
-        sns.boxplot(data=data, x='Group', y=selected_column, ax=ax)
-        st.pyplot(fig)
-    else:
-        st.warning("No available variables to visualize.")
-
-         
-    interpretacja = """
-    The Converted group has a wider age range and its individuals appear older, but overall, there are no drastic differences between groups. MMSE scores are significantly lower in the Demented group, with higher variability and outliers, while Nondemented and Converted groups have similar scores. The Nondemented group shows the highest median eTIV, and Converted the lowest, with outliers in the Demented group. The lowest median nWBV is in the Demented group, indicating greater brain volume loss, while Nondemented and Converted groups are more similar. Median ASF is similar across groups, but the Nondemented group shows more spread and outliers, with the smallest range in the Converted group.
-    """
-
-    st.header("Interpretation of the Charts")
-    st.write(interpretacja)
-
+ 
     
     # Interactive scatterplot tool
     st.subheader("Explore Relationships Between Variables (Scatterplot)")
