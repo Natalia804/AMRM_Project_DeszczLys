@@ -413,7 +413,9 @@ def braki_outliery_section() -> None:
     st.write("Data after final cleaning:")
     st.dataframe(data_cleaned.head())
 
- 
+    
+   # Save to session_state
+    st.session_state.data_cleaned = data_cleaned
 
     # Outlier analysis
     st.subheader("Outlier Analysis (Z-score)")
@@ -435,15 +437,11 @@ def braki_outliery_section() -> None:
     st.write("Summary of the number of outliers in each column:")
     st.dataframe(outliers_summary_df)
 
-    # Deleting outliers
-    data_cleaned = data_standardized.abs().lt(3).all(axis=1)
 
     st.write("""
     Due to the medical nature of the problem, we were debating wheater to delete them (because they could be potentially important observations), but after investigation of plots we decided to do so. 
     """)
 
-   # Save to session_state
-    st.session_state.data_cleaned = data_cleaned
 
 def dzielenie_section() -> None:
     """
