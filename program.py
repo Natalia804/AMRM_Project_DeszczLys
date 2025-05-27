@@ -696,7 +696,7 @@ def metody_uczenia_section() -> None:
     }
     metrics_df_svm = pd.DataFrame(metrics_data_svm)
 
-    st.table(metrics_df_svm)
+    #st.table(metrics_df_svm)
 
         # ---------- Cross-validation – SVM ----------
     svm_cv_df = cv_report(best_svm_model, X_train, y_train, "SVM")
@@ -776,9 +776,15 @@ def metody_uczenia_section() -> None:
     }
     metrics_df_rf = pd.DataFrame(metrics_data_rf)
 
-    st.table(metrics_df_rf)
+    #st.table(metrics_df_rf)
 
-        # Random Forest
+    # ---------- Cross-validation – Random Forest ----------
+    rf_cv_df = cv_report(best_rf_model, X_train, y_train, "Random Forest")
+    st.subheader("Cross-validation (5 × StratifiedKFold) – Random Forest")
+    st.table(rf_cv_df)
+
+
+    # Random Forest
     combined_rf = pd.DataFrame(
         {
             "Test set": [rf_accuracy, rf_precision, rf_recall, rf_f1],
