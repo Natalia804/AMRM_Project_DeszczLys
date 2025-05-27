@@ -329,6 +329,24 @@ def charakterystyka_danych_section(data: pd.DataFrame) -> None:
     else:
         st.warning("Not enough numerical columns to generate scatterplots.")
 
+        # Scatter-like plot: numerical variable by Group
+    st.subheader("Scatter Distribution of Numerical Variables by Group")
+    st.markdown("This shows the distribution of selected variable across dementia groups.")
+
+    numerical_cols = data.select_dtypes(include=['float64', 'int64']).columns.tolist()
+    if 'Group' in data.columns and numerical_cols:
+        y_variable = st.selectbox("Select a numerical variable to visualize across groups:", numerical_cols, key="scatter_by_group")
+
+        fig, ax = plt.subplots(figsize=(8, 6))
+        sns.stripplot(data=data, x='Group', y=y_variable, jitter=True, alpha=0.6, palette='Set2', ax=ax)
+        ax.set_title(f"Distribution of {y_variable} by Diagnosis Group")
+        ax.set_ylabel(y_variable)
+        ax.set_xlabel("Diagnosis Group")
+        st.pyplot(fig)
+    else:
+        st.warning("Group column or numerical variables are missing.")
+
+
     
     # Save selected columns to session_state
     selected_columns = ['nWBV', 'MMSE', 'eTIV', 'SES', 'is_demented', 'is_male']
