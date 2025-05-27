@@ -599,6 +599,19 @@ def metody_uczenia_section() -> None:
     st.subheader("Cross-validation (5 × StratifiedKFold) – Decision Tree")
     st.table(dt_cv_df)
 
+
+
+
+    # Displaying the metrics
+    metrics_data = {
+        "Metric": ["Accuracy", "Precision", "Recall", "F1-score"],
+        "Value": [tree_accuracy, tree_precision, tree_recall, tree_f1]
+    }
+    metrics_df = pd.DataFrame(metrics_data)
+
+    st.table(metrics_df)
+
+    
         # ---------- Combined single table – Decision Tree ----------
     combined_dt = pd.DataFrame(
         {
@@ -615,17 +628,6 @@ def metody_uczenia_section() -> None:
     
     st.subheader("Decision Tree – Test vs. 5-fold CV")
     st.table(combined_dt)
-
-
-
-    # Displaying the metrics
-    metrics_data = {
-        "Metric": ["Accuracy", "Precision", "Recall", "F1-score"],
-        "Value": [tree_accuracy, tree_precision, tree_recall, tree_f1]
-    }
-    metrics_df = pd.DataFrame(metrics_data)
-
-    st.table(metrics_df)
 
 
     st.subheader("ROC Curve – Decision Tree")
