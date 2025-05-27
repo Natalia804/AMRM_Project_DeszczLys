@@ -697,8 +697,13 @@ def metody_uczenia_section() -> None:
     metrics_df_svm = pd.DataFrame(metrics_data_svm)
 
     st.table(metrics_df_svm)
+
+        # ---------- Cross-validation – SVM ----------
+    svm_cv_df = cv_report(best_svm_model, X_train, y_train, "SVM")
+    # st.table(svm_cv_df)
+
     
-        # SVM
+    # SVM
     combined_svm = pd.DataFrame(
         {
             "Test set": [svm_accuracy, svm_precision, svm_recall, svm_f1],
