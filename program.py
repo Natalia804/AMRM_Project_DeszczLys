@@ -413,7 +413,6 @@ def braki_outliery_section() -> None:
     st.write("Data after final cleaning:")
     st.dataframe(data_cleaned.head())
 
-    
    # Save to session_state
     st.session_state.data_cleaned = data_cleaned
 
@@ -436,7 +435,6 @@ def braki_outliery_section() -> None:
     outliers_summary_df = pd.DataFrame(outliers_summary)
     st.write("Summary of the number of outliers in each column:")
     st.dataframe(outliers_summary_df)
-
 
     st.write("""
     Due to the medical nature of the problem, we were debating wheater to delete them (because they could be potentially important observations), but after investigation of plots we decided to do so. 
