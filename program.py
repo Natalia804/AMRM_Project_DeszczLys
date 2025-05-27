@@ -15,6 +15,7 @@ from sklearn.model_selection import (
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.ensemble import RandomForestClassifier
+
 from sklearn.metrics import (
     accuracy_score,
     confusion_matrix,
@@ -606,7 +607,6 @@ def metody_uczenia_section() -> None:
 
       # ---------- Cross-validation – Decision Tree ----------
     dt_cv_df = cv_report(best_tree_model, X_train, y_train, "Decision Tree")
-    st.subheader("Cross-validation (5 × StratifiedKFold) – Decision Tree")
     #st.table(dt_cv_df)
 
 
@@ -697,6 +697,24 @@ def metody_uczenia_section() -> None:
     metrics_df_svm = pd.DataFrame(metrics_data_svm)
 
     st.table(metrics_df_svm)
+    
+        # SVM
+    combined_svm = pd.DataFrame(
+        {
+            "Test set": [svm_accuracy, svm_precision, svm_recall, svm_f1],
+            "CV mean":  [
+                svm_cv_df.loc["SVM", "ACC"],
+                svm_cv_df.loc["SVM", "PREC"],
+                svm_cv_df.loc["SVM", "REC"],
+                svm_cv_df.loc["SVM", "F1"],
+            ],
+        },
+        index=["Accuracy", "Precision", "Recall", "F1-score"],
+    ).round(3)
+    
+    st.subheader("SVM – Test vs. 5-fold Cross-validation")
+    st.table(combined_svm)
+
 
     # ---------- ROC – SVM ----------
     st.subheader("ROC Curve – SVM")
@@ -754,6 +772,24 @@ def metody_uczenia_section() -> None:
     metrics_df_rf = pd.DataFrame(metrics_data_rf)
 
     st.table(metrics_df_rf)
+
+        # Random Forest
+    combined_rf = pd.DataFrame(
+        {
+            "Test set": [rf_accuracy, rf_precision, rf_recall, rf_f1],
+            "CV mean":  [
+                rf_cv_df.loc["Random Forest", "ACC"],
+                rf_cv_df.loc["Random Forest", "PREC"],
+                rf_cv_df.loc["Random Forest", "REC"],
+                rf_cv_df.loc["Random Forest", "F1"],
+            ],
+        },
+        index=["Accuracy", "Precision", "Recall", "F1-score"],
+    ).round(3)
+    
+    st.subheader("Random Forest – Test vs. 5-fold Cross-validation")
+    st.table(combined_rf)
+
     
     # ---------- ROC – Random Forest ----------
     st.subheader("ROC Curve – Random Forest")
