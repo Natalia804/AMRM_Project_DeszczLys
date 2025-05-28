@@ -1019,101 +1019,6 @@ def podsumowanie_section() -> None:
     """, unsafe_allow_html=True)
 
 
-
-
-def dokumentacja_section() -> None:
-
-    """
-        Displays the project documentation section:
-        - Project purpose and scope
-        - How to run it
-        - Project structure
-        - Example docstrings
-    """
-    st.title("Project Documentation")
-    st.markdown("""
-    <h4>Purpose and Scope</h4>
-    <p>
-    The goal of this project is to build an analysis of medical and socio-economic data related to Alzheimer's disease,  
-    including handling missing data, standardization, training classification models, and interpreting results.
-    </p>
-
-    <h4>How to Run</h4>
-    <ul>
-    <p>The application is already running and available. The code is accessible in the top right corner on <strong>GitHub</strong>.</p>
-    </ul>
-
-    <h4>File Structure</h4>
-    <p>
-    <ul>
-        <li><code>program.py</code> – the main file that runs the Streamlit application</li>
-        <li><code>alzheimer_features.csv</code> – the dataset file</li>
-        <li><code>requirements.txt</code> – file containing required libraries for the app to work</li>
-    </ul>
-    </p>
-
-    <h4>Task Division</h4>
-    <ul>
-        <li><strong>Zuzanna Deszcz</strong>:
-            <ul>
-                <li><strong>Data Processing:</strong>
-                    <ul>
-                        <li>Loading data from the CSV file.</li>
-                        <li>Mapping and transforming categorical data.</li>
-                    </ul>
-                </li>
-                <li><strong>Creating Visualizations:</strong>
-                    <ul>
-                        <li>Generating statistical and correlation plots.</li>
-                        <li>Creating confusion matrices and boxplots.</li>
-                    </ul>
-                </li>
-                <li><strong>Introductory Sections in Streamlit:</strong>
-                    <ul>
-                        <li>Developing the introduction and dataset description sections in the Streamlit app.</li>
-                    </ul>
-                </li>
-                <li><strong>Data Cleaning:</strong>
-                    <ul>
-                        <li>Handling missing data (e.g., removal, value imputation).</li>
-                        <li>Detecting and analyzing outliers.</li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
-        <li><strong>Natalia Łyś</strong>:
-            <ul>
-                <li><strong>Data Splitting:</strong>
-                    <ul>
-                        <li>Splitting data into training and testing sets.</li>
-                        <li>Standardizing numerical data.</li>
-                    </ul>
-                </li>
-                <li><strong>Training Machine Learning Models:</strong>
-                    <ul>
-                        <li>Implementing and optimizing models such as Decision Trees, SVM, and Random Forest.</li>
-                        <li>Using GridSearchCV to select the best hyperparameters.</li>
-                    </ul>
-                </li>
-                <li><strong>Analysis and Presentation of Results:</strong>
-                    <ul>
-                        <li>Evaluating models using metrics (accuracy, precision, recall, F1-score).</li>
-                        <li>Creating and interpreting comparison charts.</li>
-                        <li>Implementing model interpretability analysis (e.g., SHAP).</li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
-    </ul>
-
-    <h4>Function Documentation (Docstrings)</h4>
-    <p>
-    Each function includes a short description, parameters, and return values to ensure code clarity.
-    </p>
-    """, unsafe_allow_html=True)
-
-
-
 # =============== MAIN PART OF THE APPLICATION=============== #
 
 def main() -> None:
@@ -1154,8 +1059,6 @@ def main() -> None:
         metody_uczenia_section()
     elif selected_section == "Summary and Conclusions":
         podsumowanie_section()
-    elif selected_section == "Documentation":
-        dokumentacja_section()
 
 
 if __name__ == "__main__":
