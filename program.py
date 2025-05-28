@@ -495,7 +495,7 @@ def dzielenie_section() -> None:
         X[numeric_cols] = scaler.fit_transform(X[numeric_cols])
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.1, random_state=42, stratify=y
+        X, y, test_size=0.3, random_state=42, stratify=y
     )
 
     st.write("Preview of X_train after standardization:")
