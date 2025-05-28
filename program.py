@@ -889,39 +889,39 @@ def metody_uczenia_section() -> None:
 
     st.subheader("1. Accuracy")
     st.write("""
-    All three models achieved the same accuracy of 85.33%. This means that 85.33% of all diagnoses (both positive and negative) were correctly classified.  
-    While this indicates overall model robustness, accuracy alone is not sufficient when dealing with imbalanced datasets, which is the case here.
+    All three models achieved the same accuracy bigger than 80.00%. This means that for example for random forest 85.14% of all diagnoses (both positive and negative) were correctly classified.  
+    While this indicates overall model robustness, accuracy alone is not sufficient when dealing with slightly imbalanced datasets, which is the case here.
     """)
 
     st.subheader("2. Precision")
     st.write("""
-    The highest precision was achieved by the Decision Tree and SVM (90.91%), meaning that most of the cases classified as “Demented” actually belonged to that group.  
-    Random Forest achieved a precision of 84.62%, which is slightly lower but still acceptable.  
-    This may indicate a higher number of false positives compared to the other models.
+    The highest precision was achieved by the Random Forest again (86.96%), meaning that most of the cases classified as “Demented” actually belonged to that group.  
+    SVM achieved a precision of 85.71%, which is slightly lower..  
     """)
 
     st.subheader("3. Recall")
     st.write("""
-    The recall for the Decision Tree and SVM was 68.97%. This relatively low value means that both models missed many actual cases of dementia (false negatives).  
+    The recall for the Decision Tree and SVM was 64.29%. This relatively low value means that both models missed many actual cases of dementia (false negatives).  
     This is a significant issue in medical models — we would rather detect dementia where it isn’t present than miss a real case.  
-    Random Forest performed better in this category (75.86%), indicating a greater ability to detect true dementia cases.  
+    Random Forest performed better in this category (71.43%), indicating a greater ability to detect true dementia cases, even though that was not very huge difference.  
     This is crucial in medical analysis, as missing a dementia diagnosis can have serious consequences.
     """)
 
     st.subheader("4. F1-score")
     st.write("""
     The F1-score considers both precision and recall, making it a more balanced measure of model performance.  
-    The Decision Tree and SVM achieved an F1-score of 78.43%, indicating similar ability to balance false positives and false negatives.  
-    Random Forest achieved the highest F1-score at 80%, suggesting that it best balances precision and recall, making it the most suitable choice for this analysis.
+    The Decision Tree and SVM achieved an F1-score of around 73%, indicating similar ability to balance false positives and false negatives.  
+    Random Forest achieved the highest F1-score at 78,43%, suggesting that it best balances precision and recall, making it the most suitable choice for this analysis.
     """)
 
     # Conclusions
     st.header("Conclusions")
     st.write("""
-    1. **Random Forest** showed the best performance in terms of balancing precision and recall (F1-score = 80%).  
+    1. **Random Forest** showed the best performance in terms of balancing precision and recall (F1-score = 78,43%).  
     Its higher recall makes it particularly useful when it’s crucial to minimize missed cases of dementia, which is especially important in our case.
+    Also based on ROC analysis this machine learning model turns out to be the best in this case.
 
-    2. **Decision Tree and SVM** achieved very similar results, particularly in precision and F1-score,  
+    2. **Decision Tree and SVM** achieved very similar results, particularly in recall and F1-score,  
     but their lower recall is less desirable in medical practice.
     """)
 
@@ -970,21 +970,22 @@ def metody_uczenia_section() -> None:
     - **Women (red dots):** Have a lower probability of developing dementia.
     - **Conclusion:** Male gender may appear as a risk factor in this context. However, we know from research that this conclusion is inaccurate, and the sample studied is not representative.
 
-    ### 3. `nWBV`
-    - **Lower brain volume (blue dots):** Increases the risk of dementia (SHAP > 0).
-    - **Higher brain volume (red dots):** Decreases the risk of dementia (SHAP < 0).
-    - **Conclusion:** Brain volume loss is a significant risk indicator for dementia.
-
-    ### 4. `eTIV`
+    ### 3. `eTIV`
     - **The impact of eTIV is less pronounced, but overall:**
     - Lower eTIV values may slightly increase dementia risk.
     - Higher eTIV values have a mild protective effect.
     - **Conclusion:** Monitoring eTIV can be helpful as an additional indicator.
 
+    ### 4. `Age`
+    - **Lower age (blue dots):** Increases the risk of dementia (SHAP > 0).
+    - **Higher age (red dots):** Decreases the risk of dementia (SHAP < 0).
+    - **Conclusion:** Those outcomes are counterintuitive, but also not definitive. We can see on the plot that most of values are cramped in center, which doesnt give as definitive results.
+    
+
     ### 5. `SES`
-    - **Lower SES (blue dots):** Increases the risk of dementia (SHAP > 0).
-    - **Higher SES (red dots):** Decreases the risk of dementia (SHAP < 0).
-    - **Conclusion:** People with lower socio-economic status are more exposed to dementia risk. Support for this group could help reduce that risk.
+    - **Lower SES (blue dots):**  Decreases the risk of dementia (SHAP < 0).
+    - **Higher SES (red dots):**  Increases the risk of dementia (SHAP > 0).
+    - **Conclusion:** People with lower socio-economic status are more exposed to dementia risk. This again does not give definitive answers. Same as above.
     """)
 
 
@@ -1005,8 +1006,8 @@ def podsumowanie_section() -> None:
         <p>The strongest effects were observed for MMSE and nWBV, while variables like is_male, eTIV, and SES showed a smaller and more varied impact.</p>
 
         <ul>
-            <li><strong>MMSE</strong> and <strong>nWBV</strong> are the most important indicators. Low cognitive test scores and reduced brain volume clearly increase the risk of dementia.</li>
-            <li><strong>Male gender</strong> and <strong>low SES</strong> are additional risk factors, suggesting the need for targeted support.</li>
+            <li><strong>MMSE</strong> and <strong>Male gender</strong> are the most important indicators. Low cognitive test scores and reduced brain volume clearly increase the risk of dementia.</li>
+            <li><strong>Age</strong> and <strong>low SES</strong> are additional risk factors, suggesting the need for targeted support.</li>
             <li><strong>eTIV</strong> and other brain parameters have a moderate impact, but monitoring them can help in risk assessment.</li>
         </ul>
 
