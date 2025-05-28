@@ -1035,7 +1035,6 @@ def main() -> None:
         "Train-Test Split",
         "Machine Learning Methods",
         "Summary and Conclusions",
-        "Documentation"
     ]
     selected_section = st.sidebar.radio("Go to section:", sections)
 
