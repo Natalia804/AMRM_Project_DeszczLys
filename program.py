@@ -356,7 +356,7 @@ def charakterystyka_danych_section(data: pd.DataFrame) -> None:
 
     
     # Save selected columns to session_state
-    selected_columns = ['nWBV', 'MMSE', 'eTIV', 'SES', 'is_demented', 'is_male']
+    selected_columns = ['Age', 'MMSE', 'eTIV', 'SES', 'is_demented', 'is_male']
     available_columns = [col for col in selected_columns if col in data.columns]
     if available_columns:
         st.session_state.data_selected = data[available_columns]
