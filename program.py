@@ -495,13 +495,14 @@ def dzielenie_section() -> None:
         X[numeric_cols] = scaler.fit_transform(X[numeric_cols])
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.3, random_state=42, stratify=y
+        X, y, test_size=0.2, random_state=42, stratify=y
     )
 
     st.write("Preview of X_train after standardization:")
     st.dataframe(X_train.head())
     st.write("Preview of y_train:")
     st.write(y_train.head())
+    st.write("Although the 80–20 and 90–10 train-test splits yielded comparable results, the 70–30 split initially seemed preferable because it boosted the headline metrics. Cross-validation, however, later showed that this larger test set ultimately made the model less effective.")
     st.write(f"Number of samples in training set: {len(X_train)}")
     st.write(f"Number of samples in test set: {len(X_test)}")
 
