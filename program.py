@@ -502,7 +502,7 @@ def dzielenie_section() -> None:
     st.dataframe(X_train.head())
     st.write("Preview of y_train:")
     st.write(y_train.head())
-    st.write("Although the 80–20 and 90–10 train-test splits yielded comparable results, the 70–30 split initially seemed preferable because it boosted the headline metrics. Cross-validation, however, later showed that this larger test set ultimately made the model less effective.")
+    st.write("Although the 80–20 and 90–10 train-test splits yielded comparable results, the 70–30 split initially seemed preferable because it boosted the headline metrics. Cross-validation, however, later showed that this larger test set ultimately made the model less effective. In the end we decided to stick with 80-20.")
     st.write(f"Number of samples in training set: {len(X_train)}")
     st.write(f"Number of samples in test set: {len(X_test)}")
 
