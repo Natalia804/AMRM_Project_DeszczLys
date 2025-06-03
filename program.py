@@ -1003,7 +1003,7 @@ def podsumowanie_section() -> None:
     For this purpose, machine learning models (SVM, Decision Trees, Random Forest) were applied, and the best-performing model (Random Forest)  
     was selected for its predictive capability. Variables with the strongest impact on the disease were identified and compared with findings from existing literature.</p>
     
-    <p>The strongest effects were observed for MMSE and nWBV, while variables like is_male, eTIV, and SES showed a smaller and more varied impact.</p>
+    <p>The strongest effects were observed for MMSE and is_male, while variables like age, eTIV, and SES showed a smaller and more varied impact.</p>
     
     <ul>
         <li><strong>MMSE</strong> and <strong>Male gender</strong> are the most important indicators. Low cognitive test scores and reduced brain volume clearly increase the risk of dementia.</li>
