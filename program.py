@@ -998,22 +998,25 @@ def podsumowanie_section() -> None:
     st.title("Summary and Conclusions")
     st.markdown("""
     <h4>Summary:</h4>
+
         <p>The goal of the project was to explore variables and determine which ones significantly influence the risk of developing Alzheimer's disease.  
         For this purpose, machine learning models (SVM, Decision Trees, Random Forest) were applied, and the best-performing model (Random Forest)  
         was selected for its predictive capability. Variables with the strongest impact on the disease were identified and compared with findings from existing literature.</p>
-
+        
         <p>The strongest effects were observed for MMSE and nWBV, while variables like is_male, eTIV, and SES showed a smaller and more varied impact.</p>
-
+        
         <ul>
             <li><strong>MMSE</strong> and <strong>Male gender</strong> are the most important indicators. Low cognitive test scores and reduced brain volume clearly increase the risk of dementia.</li>
             <li><strong>Age</strong> and <strong>low SES</strong> are additional risk factors, suggesting the need for targeted support.</li>
             <li><strong>eTIV</strong> and other brain parameters have a moderate impact, but monitoring them can help in risk assessment.</li>
         </ul>
-
+        
         <p>The results indicate that early diagnosis and interventions aimed at improving MMSE scores can significantly reduce the risk.  
         Regular MRI/CT scans for high-risk groups may help detect issues early. Special attention should be paid to health education and prevention in these groups.</p>
-
+        
         <p>The model incorporates both biological and social features, suggesting that an interdisciplinary approach is essential in the assessment and prevention of dementia.</p>
+
+       
     """, unsafe_allow_html=True)
 
 
